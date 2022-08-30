@@ -6,7 +6,7 @@ plugins {
     id("net.mamoe.mirai-console") version "2.11.1"
 }
 
-group = "org.example"
+group = "com.github.nanoyou"
 version = "0.1.0"
 
 repositories {
