@@ -1,6 +1,7 @@
 package com.github.nanoyou.maidnana.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +11,13 @@ import java.time.LocalDateTime;
  * @author Huang Samuel
  * @date 2022/08/31
  */
-@Data
-public class Until extends Expire{
+@Getter
+@AllArgsConstructor
+public class Until implements Expire{
     private LocalDateTime datetime;
+
+    @Override
+    public boolean isExpired() {
+        return false;
+    }
 }

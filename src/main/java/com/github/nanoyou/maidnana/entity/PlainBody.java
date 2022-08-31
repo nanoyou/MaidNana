@@ -1,6 +1,8 @@
 package com.github.nanoyou.maidnana.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * Entity - PlainBody
@@ -8,7 +10,16 @@ import lombok.Data;
  * @author Huang Samuel
  * @date 2022/08/31
  */
-@Data
-public class PlainBody extends Body{
+@Getter
+@AllArgsConstructor
+public class PlainBody implements Body{
     private String content;
+
+    /**
+     * @return The body string.
+     */
+    @Override
+    public String getBodyString() {
+        return null;
+    }
 }
