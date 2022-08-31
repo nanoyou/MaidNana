@@ -1,4 +1,4 @@
-package org.example.mirai.plugin;
+package com.github.nanoyou.maidnana;
 
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription;
@@ -26,9 +26,9 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
  * 不用复制到 mirai-console-loader 或其他启动器中调试
  */
 
-public final class JavaPluginMain extends JavaPlugin {
-    public static final JavaPluginMain INSTANCE = new JavaPluginMain();
-    private JavaPluginMain() {
+public final class MaidNana extends JavaPlugin {
+    public static final MaidNana INSTANCE = new MaidNana();
+    private MaidNana() {
         super(new JvmPluginDescriptionBuilder("org.example.mirai-example", "0.1.0")
                 .info("EG")
                 .build());
@@ -41,7 +41,12 @@ public final class JavaPluginMain extends JavaPlugin {
         eventChannel.subscribeAlways(GroupMessageEvent.class, g -> {
             //监听群消息
             getLogger().info(g.getMessage().contentToString());
-
+            if (g.getGroup().getId() == 815997069L) {
+                String msg = g.getMessage().contentToString();
+                if (msg.startsWith("echo ")) {
+                    g.getGroup().sendMessage(msg.replaceFirst("echo ", ""));
+                }
+            }
         });
         eventChannel.subscribeAlways(FriendMessageEvent.class, f -> {
             //监听好友消息
