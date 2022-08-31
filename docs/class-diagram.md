@@ -1,4 +1,5 @@
 # 类图
+## 实体类
 ```mermaid
 classDiagram
 class Body {
