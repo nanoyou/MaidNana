@@ -13,3 +13,6 @@ repositories {
     maven("https://maven.aliyun.com/repository/public") // 阿里云国内代理仓库
     mavenCentral()
 }
+dependencies {
+    implementation("org.projectlombok:lombok:1.18.20")
+}
