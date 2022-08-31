@@ -41,6 +41,12 @@ public final class MaidNana extends JavaPlugin {
         eventChannel.subscribeAlways(GroupMessageEvent.class, g -> {
             //监听群消息
             getLogger().info(g.getMessage().contentToString());
+            if (g.getGroup().getId() == 815997069L) {
+                String msg = g.getMessage().contentToString();
+                if (msg.startsWith("echo ")) {
+                    g.getGroup().sendMessage(msg.replaceFirst("echo ", ""));
+                }
+            }
         });
         eventChannel.subscribeAlways(FriendMessageEvent.class, f -> {
             //监听好友消息
