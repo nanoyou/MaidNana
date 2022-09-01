@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.TestOnly;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class AnnouncementService {
@@ -27,8 +28,8 @@ public class AnnouncementService {
      * @param announcementID
      * @return
      */
-    public Announcement get(UUID announcementID) {
-        return null;
+    public Optional<Announcement> get(UUID announcementID) {
+        return Optional.empty();
     }
 
     /**
