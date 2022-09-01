@@ -42,7 +42,7 @@ class AnnouncementDao {
     +getInstance()$ AnnouncementDao
     
     +add(Announcement a) Announcement
-    +get(UUID uuid) Announcement
+    +get(UUID uuid) Optional~Announcement~
     +modify(Announcement a) Announcement
     +delete(UUID uuid) Announcement 
     +getAll() List~Announcement~
@@ -51,7 +51,7 @@ class TemplateDao {
     +getInstance()$ TemplateDao
     
     +add(Template a) Template
-    +get(UUID uuid) Template
+    +get(UUID uuid) Optional~Template~
     +modify(Template a) Template
     +delete(UUID uuid) Template
     +getAll() List~Template~
@@ -65,7 +65,7 @@ class AnnouncementService {
     +getInstance()$ AnnouncementService
     
     +create() Announcement
-    +get(UUID announcementID) Announcement
+    +get(UUID announcementID) Optional~Announcement~
     +delete(UUID annoucementID) Announcement
     +addGroup(UUID announcementID, long groupID)
     +removeGroup(UUID announcementID, long groupID)
@@ -79,8 +79,8 @@ class TemplateService {
     +getInstance()$ TemplateService
     
     +create() Template
-    +delete(UUID templateID)
-    +get(UUID templateID)
-    +modify(UUID templateID, String template)
+    +delete(UUID templateID) Template
+    +get(UUID templateID) Optional~Template~
+    +modify(UUID templateID, String template) Template
 }
 ```
