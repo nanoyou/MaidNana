@@ -1,9 +1,21 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     val kotlinVersion = "1.6.10"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
     id("net.mamoe.mirai-console") version "2.11.1"
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 group = "com.github.nanoyou"
