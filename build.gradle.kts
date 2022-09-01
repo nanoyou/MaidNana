@@ -27,4 +27,5 @@ repositories {
 }
 dependencies {
     implementation("org.projectlombok:lombok:1.18.20")
+    implementation("com.google.code.gson:gson:2.9.1")
 }
