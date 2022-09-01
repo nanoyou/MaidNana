@@ -15,10 +15,6 @@ public class AnnouncementService {
     @Getter
     private final static AnnouncementService instance = new AnnouncementService();
 
-    private final TemplateDao templateDao = TemplateDao.getInstance();
-
-    private final AnnouncementDao announcementDao = AnnouncementDao.getInstance();
-    
     /**
      * @return
      */
