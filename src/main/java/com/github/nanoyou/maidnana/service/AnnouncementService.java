@@ -1,5 +1,6 @@
 package com.github.nanoyou.maidnana.service;
 
+import com.github.nanoyou.maidnana.dao.AnnouncementDao;
 import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.entity.Body;
@@ -16,6 +17,8 @@ public class AnnouncementService {
 
     private final TemplateDao templateDao = TemplateDao.getInstance();
 
+    private final AnnouncementDao announcementDao = AnnouncementDao.getInstance();
+    
     /**
      * @return
      */
