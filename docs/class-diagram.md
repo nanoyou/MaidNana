@@ -20,34 +20,10 @@ class TemplateBody {
 }
 Template --o TemplateBody
 TemplateBody --|> Body
-class Expire {
-    <<interface>>
-    +isExpire() boolean
-}
-class Always {
-    
-}
-Always --|> Expire
-class Until {
-    +LocalDateTime datetime
-}
-Until --|> Expire
-class Times {
-    +int total
-    +int current
-}
-Times --|> Expire
 class Trigger {
-    <<abstract>>
     +UUID uuid
-    +LocalDateTime startTime
-    +Expire expire
+    +String cron
 }
-class MinuteTrigger {
-    +int interval
-}
-MinuteTrigger --|> Trigger
-Expire --* Trigger
 class Announcement {
     +UUID uuid
     +List~Long~ groups
@@ -95,7 +71,6 @@ class AnnouncementService {
     +removeGroup(UUID announcementID, long groupID)
     +addTrigger(UUID announcementID, Trigger trigger)
     +removeTrigger(UUID announcementID, UUID triggerID)
-    +increaseTriggerTime(UUID announcementID, UUID triggerID)
     +setBody(UUID annoucementID, Body body)
     +enable(UUID announcementID)
     +disable(UUID announcementID)
