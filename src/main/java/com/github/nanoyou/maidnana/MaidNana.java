@@ -29,7 +29,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 public final class MaidNana extends JavaPlugin {
     public static final MaidNana INSTANCE = new MaidNana();
     private MaidNana() {
-        super(new JvmPluginDescriptionBuilder("org.example.mirai-example", "0.1.0")
+        super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.1.0")
                 .info("EG")
                 .build());
     }
