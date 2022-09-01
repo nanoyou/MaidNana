@@ -13,8 +13,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class AnnouncementService {
-    @Getter
     private final static AnnouncementService instance = new AnnouncementService();
+    public static AnnouncementService getInstance() {
+        return instance;
+    }
 
     /**
      * @return
