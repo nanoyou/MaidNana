@@ -13,9 +13,9 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "11"
     }
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
 }
 
 group = "com.github.nanoyou"
