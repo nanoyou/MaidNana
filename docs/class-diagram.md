@@ -65,7 +65,7 @@ classDiagram
 class AnnouncementDao {
     +getInstance()$ AnnouncementDao
     
-    +new(Announcement a) Announcement
+    +add(Announcement a) Announcement
     +get(UUID uuid) Announcement
     +modify(Announcement a) Announcement
     +delete(UUID uuid) Announcement 
@@ -74,7 +74,7 @@ class AnnouncementDao {
 class TemplateDao {
     +getInstance()$ TemplateDao
     
-    +new(Template a) Template
+    +add(Template a) Template
     +get(UUID uuid) Template
     +modify(Template a) Template
     +delete(UUID uuid) Template
@@ -88,7 +88,7 @@ classDiagram
 class AnnouncementService {
     +getInstance()$ AnnouncementService
     
-    +new() Announcement
+    +create() Announcement
     +get(UUID announcementID) Announcement
     +delete(UUID annoucementID) Announcement
     +addGroup(UUID announcementID, long groupID)
@@ -103,7 +103,7 @@ class AnnouncementService {
 class TemplateService {
     +getInstance()$ TemplateService
     
-    +new() Template
+    +create() Template
     +delete(UUID templateID)
     +get(UUID templateID)
     +modify(UUID templateID, String template)
