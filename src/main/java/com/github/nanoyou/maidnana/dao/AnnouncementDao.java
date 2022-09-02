@@ -9,8 +9,11 @@ import java.nio.file.Path;
 import java.util.Collection;
 
 public class AnnouncementDao extends BaseDao<Announcement> {
-    private final static AnnouncementDao instance = new AnnouncementDao();
+    private static AnnouncementDao instance = null;
     public static AnnouncementDao getInstance() {
+        if (instance == null) {
+            instance = new AnnouncementDao();
+        }
         return instance;
     }
 

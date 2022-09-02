@@ -9,9 +9,12 @@ import java.nio.file.Path;
 import java.util.Collection;
 
 public class TemplateDao extends BaseDao<Template> {
-    private final static TemplateDao instance = new TemplateDao();
+    private static TemplateDao instance = new TemplateDao();
 
     public static TemplateDao getInstance() {
+        if (instance == null) {
+            instance = new TemplateDao();
+        }
         return instance;
     }
 
