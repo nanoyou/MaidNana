@@ -1,15 +1,23 @@
 package com.github.nanoyou.maidnana.dao;
 
 import com.github.nanoyou.maidnana.entity.Identifiable;
+import com.github.nanoyou.maidnana.util.GsonUtil;
 
-import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public abstract class BaseDao<T extends Identifiable> {
-    public abstract File getFile();
+    public abstract Path getPath();
     public abstract Type getType();
     private final Map<UUID, T> data = new HashMap<>();
+
+    public BaseDao() {
+        load();
+    }
 
     /**
      * 添加值
@@ -71,10 +79,23 @@ public abstract class BaseDao<T extends Identifiable> {
         return new ArrayList<>(data.values());
     }
 
-    protected void load() {
-
+    private void load() {
+        String jsonStr;
+        try {
+            jsonStr = Files.readString(getPath(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Collection<T> r = GsonUtil.gson.fromJson(jsonStr, getType());
+        data.clear();
+        r.forEach(v -> data.put(v.getUuid(), v));
     }
     private void save() {
-
+        var jsonStr = GsonUtil.gson.toJson(data.values(), getType());
+        try {
+            Files.writeString(getPath(), jsonStr, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

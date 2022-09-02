@@ -1,60 +1,26 @@
 package com.github.nanoyou.maidnana.dao;
 
+import com.github.nanoyou.maidnana.MaidNana;
 import com.github.nanoyou.maidnana.entity.Announcement;
-import lombok.Getter;
+import com.google.gson.reflect.TypeToken;
 
-import java.util.List;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.nio.file.Path;
+import java.util.Collection;
 
-public class AnnouncementDao {
-    @Getter
+public class AnnouncementDao extends BaseDao<Announcement> {
     private final static AnnouncementDao instance = new AnnouncementDao();
-
-    /**
-     * 增加一个Announcement
-     *
-     * @param a
-     */
-    public Announcement add(Announcement a) {
-        // TODO: 增加一个Announcement
-        return null;
+    public static AnnouncementDao getInstance() {
+        return instance;
     }
 
-    /**
-     * 通过uuid查找返回Announcement
-     *
-     * @param uuid
-     * @return
-     */
-    public Announcement get(UUID uuid) {
-        // TODO: 通过uuid查找返回Announcement
-        return null;
+    @Override
+    public Path getPath() {
+        return MaidNana.INSTANCE.getDataFolderPath().resolve("announcements.json");
     }
 
-    /**
-     * @param a
-     * @return
-     */
-    public Announcement modify(Announcement a) {
-        // TODO:
-        return null;
+    @Override
+    public Type getType() {
+        return new TypeToken<Collection<Announcement>>(){}.getType();
     }
-
-    /**
-     * @param uuid
-     * @return
-     */
-    public Announcement delete(UUID uuid) {
-        // TODO:
-        return null;
-    }
-
-    /**
-     * @return
-     */
-    public List<Announcement> getAll() {
-        // TODO:
-        return null;
-    }
-
 }
