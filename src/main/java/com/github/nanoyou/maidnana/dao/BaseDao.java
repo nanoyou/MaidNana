@@ -1,5 +1,6 @@
 package com.github.nanoyou.maidnana.dao;
 
+import com.github.nanoyou.maidnana.MaidNana;
 import com.github.nanoyou.maidnana.entity.Identifiable;
 import com.github.nanoyou.maidnana.util.GsonUtil;
 
@@ -16,6 +17,11 @@ public abstract class BaseDao<T extends Identifiable> {
     private final Map<UUID, T> data = new HashMap<>();
 
     public BaseDao() {
+        if (Files.notExists(getPath())) {
+            MaidNana.INSTANCE.getLogger().info("正在创建默认配置文件 " + getPath().toString());
+            save();
+            return;
+        }
         load();
     }
 
@@ -84,6 +90,7 @@ public abstract class BaseDao<T extends Identifiable> {
         try {
             jsonStr = Files.readString(getPath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
+            MaidNana.INSTANCE.getLogger().error("无法读入 " + getPath().toString(), e);
             throw new RuntimeException(e);
         }
         Collection<T> r = GsonUtil.gson.fromJson(jsonStr, getType());
@@ -95,6 +102,7 @@ public abstract class BaseDao<T extends Identifiable> {
         try {
             Files.writeString(getPath(), jsonStr, StandardCharsets.UTF_8);
         } catch (IOException e) {
+            MaidNana.INSTANCE.getLogger().error("无法写入 " + getPath().toString(), e);
             throw new RuntimeException(e);
         }
     }
