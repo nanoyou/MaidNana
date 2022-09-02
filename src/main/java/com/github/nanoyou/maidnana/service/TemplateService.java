@@ -9,14 +9,22 @@ import java.util.UUID;
 
 public class TemplateService {
 
-    @Getter
     private final static TemplateService instance = new TemplateService();
 
+    public static TemplateService getInstance() {
+        return instance;
+    }
+
     /**
-     * @return
+     * 创建模板
+     * @return 新建的模板
      */
-    public Template create() {
-        return null;
+    public Template create(String template) {
+        var t = new Template();
+        t.setUuid(UUID.randomUUID());
+        t.setTemplate(template);
+        TemplateDao.getInstance().add(t);
+        return t;
     }
 
     /**

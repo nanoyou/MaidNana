@@ -1,6 +1,7 @@
 package com.github.nanoyou.maidnana;
 
 import com.github.nanoyou.maidnana.controller.AnnouncementController;
+import com.github.nanoyou.maidnana.controller.TemplateController;
 import com.github.nanoyou.maidnana.dao.AnnouncementDao;
 import com.github.nanoyou.maidnana.dao.BaseDao;
 import com.github.nanoyou.maidnana.dao.TemplateDao;
@@ -20,6 +21,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.function.Consumer;
 
 
 /**
@@ -68,7 +70,8 @@ public final class MaidNana extends JavaPlugin {
      */
     private void initChannels() {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
-        AnnouncementController announcementController = AnnouncementController.getInstance();
+        var announcementController = AnnouncementController.getInstance();
+        var templateController = TemplateController.getInstance();
 
         // 过滤出所有有权限用户发的的消息
         EventChannel<Event> channel = eventChannel.filter(evt -> {
@@ -81,6 +84,7 @@ public final class MaidNana extends JavaPlugin {
         // 注册消息
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::newAnnouncement);
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::selectAnnouncement);
+        channel.subscribeAlways(FriendMessageEvent.class, templateController::newTemplate);
     }
     // 初始化文件
     private void initFiles() {
