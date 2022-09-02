@@ -17,6 +17,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Announcement implements Identifiable {
     private UUID uuid;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
     private List<Long> groups;
     private Body body;
     private boolean enabled;

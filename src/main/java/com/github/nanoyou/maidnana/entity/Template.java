@@ -14,5 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Template implements Identifiable{
     private UUID uuid;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
     private String template;
 }
