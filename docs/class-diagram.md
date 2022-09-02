@@ -15,7 +15,7 @@ class Template {
     +String template
 }
 class TemplateBody {
-    +Template template
+    +UUID templateID
     +Map~String, String~ var
 }
 Template --o TemplateBody
