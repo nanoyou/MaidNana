@@ -44,7 +44,7 @@ class BaseDao~T extends Identifiable~ {
     +modify(T value)* T
     +delete(UUID id)* Optional~T~
     +getAll()* List~T~
-    #load()
+    -load()
     -save()
 }
 class AnnouncementDao {
