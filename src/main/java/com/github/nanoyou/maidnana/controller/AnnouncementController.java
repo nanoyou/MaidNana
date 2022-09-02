@@ -11,7 +11,7 @@ import java.util.UUID;
 public class AnnouncementController {
     private static final AnnouncementController instance = new AnnouncementController();
 
-    private Map<Long, Announcement> selectedAnnouncement = new HashMap<>();
+    private final Map<Long, Announcement> selectedAnnouncement = new HashMap<>();
 
     public static AnnouncementController getInstance() {
         return instance;
