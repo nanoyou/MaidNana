@@ -1,16 +1,13 @@
 package com.github.nanoyou.maidnana.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * Entity - PlainBody
  *
  * @author Huang Samuel
  */
-@Getter
-@AllArgsConstructor
+@Data
 public class PlainBody implements Body{
     private String content;
 

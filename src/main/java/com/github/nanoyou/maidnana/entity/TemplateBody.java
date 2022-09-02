@@ -1,8 +1,6 @@
 package com.github.nanoyou.maidnana.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Map;
 
@@ -11,8 +9,7 @@ import java.util.Map;
  *
  * @author Huang Samuel
  */
-@Getter
-@AllArgsConstructor
+@Data
 public class TemplateBody implements Body{
     private Template template;
     private Map<String, String> var;

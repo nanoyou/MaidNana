@@ -1,7 +1,7 @@
 package com.github.nanoyou.maidnana.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
+import lombok.Data;
 
 import java.util.UUID;
 
@@ -10,8 +10,7 @@ import java.util.UUID;
  *
  * @author Huang Samuel
  */
-@Getter
-@AllArgsConstructor
+@Data
 public class Template implements Identifiable{
     private UUID uuid;
 
