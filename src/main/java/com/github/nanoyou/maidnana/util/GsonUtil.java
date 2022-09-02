@@ -1,6 +1,5 @@
 package com.github.nanoyou.maidnana.util;
 
-import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Body;
 import com.github.nanoyou.maidnana.entity.PlainBody;
 import com.github.nanoyou.maidnana.entity.TemplateBody;
