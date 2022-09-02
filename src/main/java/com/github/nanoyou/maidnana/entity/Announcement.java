@@ -12,11 +12,10 @@ import java.util.UUID;
  * Entity - Announcement
  *
  * @author Huang Samuel
- * @date 2022/08/31
  */
 @Getter
 @AllArgsConstructor
-public class Announcement {
+public class Announcement implements Identifiable {
     private UUID uuid;
     private List<Long> groups;
     private Body body;

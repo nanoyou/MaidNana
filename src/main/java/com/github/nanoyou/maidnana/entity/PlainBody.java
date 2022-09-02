@@ -8,7 +8,6 @@ import lombok.Getter;
  * Entity - PlainBody
  *
  * @author Huang Samuel
- * @date 2022/08/31
  */
 @Getter
 @AllArgsConstructor
@@ -16,10 +15,12 @@ public class PlainBody implements Body{
     private String content;
 
     /**
+     * 直接返回纯公告内容
+     *
      * @return The body string.
      */
     @Override
     public String getBodyString() {
-        return null;
+        return content;
     }
 }

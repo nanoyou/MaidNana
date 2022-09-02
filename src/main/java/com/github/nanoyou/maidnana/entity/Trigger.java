@@ -11,11 +11,9 @@ import java.util.UUID;
  * Entity - Trigger
  *
  * @author Huang Samuel
- * @date 2022/08/31
  */
 @Getter
-public abstract class Trigger {
+public class Trigger implements Identifiable {
     private UUID uuid;
-    private LocalDateTime startTime;
-    private Expire expire;
+    private String cron;
 }
