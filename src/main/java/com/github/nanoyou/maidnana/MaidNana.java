@@ -1,6 +1,9 @@
 package com.github.nanoyou.maidnana;
 
 import com.github.nanoyou.maidnana.controller.AnnouncementController;
+import com.github.nanoyou.maidnana.dao.AnnouncementDao;
+import com.github.nanoyou.maidnana.dao.BaseDao;
+import com.github.nanoyou.maidnana.dao.TemplateDao;
 import kotlin.Lazy;
 import kotlin.LazyKt;
 import net.mamoe.mirai.console.permission.*;
@@ -14,6 +17,9 @@ import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 
 /**
@@ -53,6 +59,14 @@ public final class MaidNana extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        initChannels();
+        initFiles();
+    }
+
+    /**
+     * 初始化消息频道
+     */
+    private void initChannels() {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         AnnouncementController announcementController = AnnouncementController.getInstance();
 
@@ -67,5 +81,17 @@ public final class MaidNana extends JavaPlugin {
         // 注册消息
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::newAnnouncement);
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::selectAnnouncement);
+    }
+    // 初始化文件
+    private void initFiles() {
+        if (Files.notExists(getDataFolderPath())) {
+            try {
+                getLogger().info("创建数据文件夹");
+                Files.createDirectories(getDataFolderPath());
+            } catch (IOException e) {
+                getLogger().error("创建数据文件夹失败", e);
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
