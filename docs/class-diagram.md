@@ -38,24 +38,23 @@ Body --* Announcement
 ## Dao
 ```mermaid
 classDiagram
+class BaseDao~T extends Identifiable~ {
+    +add(T value)*
+    +get(UUID id)* Optional~T~
+    +modify(T value)* T
+    +delete(UUID id)* Optional~T~
+    +getAll()* List~T~
+    #load()
+    -save()
+}
 class AnnouncementDao {
     +getInstance()$ AnnouncementDao
-    
-    +add(Announcement a) Announcement
-    +get(UUID uuid) Optional~Announcement~
-    +modify(Announcement a) Announcement
-    +delete(UUID uuid) Announcement 
-    +getAll() List~Announcement~
 }
+AnnouncementDao --|> BaseDao
 class TemplateDao {
     +getInstance()$ TemplateDao
-    
-    +add(Template a) Template
-    +get(UUID uuid) Optional~Template~
-    +modify(Template a) Template
-    +delete(UUID uuid) Template
-    +getAll() List~Template~
 }
+TemplateDao --|> BaseDao
 ```
 
 ## Service
