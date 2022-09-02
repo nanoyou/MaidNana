@@ -54,16 +54,6 @@ public final class MaidNana extends JavaPlugin {
     @Override
     public void onEnable() {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
-        eventChannel.subscribeAlways(GroupMessageEvent.class, g -> {
-            //监听群消息
-            getLogger().info(g.getMessage().contentToString());
-            if (g.getGroup().getId() == 815997069L) {
-                String msg = g.getMessage().contentToString();
-                if (msg.startsWith("echo ")) {
-                    g.getGroup().sendMessage(msg.replaceFirst("echo ", ""));
-                }
-            }
-        });
         AnnouncementController announcementController = AnnouncementController.getInstance();
 
         // 过滤出所有有权限用户发的的消息
