@@ -3,6 +3,7 @@ package com.github.nanoyou.maidnana.entity;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Entity - TemplateBody
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 @Data
 public class TemplateBody implements Body{
-    private Template template;
+    private UUID templateID;
     private Map<String, String> var;
 
     /**
