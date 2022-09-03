@@ -1,15 +1,10 @@
 package com.github.nanoyou.maidnana;
 
-import com.github.nanoyou.maidnana.controller.AnnouncementController;
-import com.github.nanoyou.maidnana.controller.TemplateController;
-import com.github.nanoyou.maidnana.dao.AnnouncementDao;
-import com.github.nanoyou.maidnana.dao.BaseDao;
-import com.github.nanoyou.maidnana.dao.TemplateDao;
+import com.github.nanoyou.maidnana.controller.*;
 import kotlin.Lazy;
 import kotlin.LazyKt;
 import net.mamoe.mirai.console.permission.*;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
-import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.contact.User;
@@ -17,11 +12,9 @@ import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.function.Consumer;
 
 
 /**
@@ -72,6 +65,7 @@ public final class MaidNana extends JavaPlugin {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         var announcementController = AnnouncementController.getInstance();
         var templateController = TemplateController.getInstance();
+        var miscController = MiscController.getInstance();
 
         // 过滤出所有有权限用户发的的消息
         EventChannel<Event> channel = eventChannel.filter(evt -> {
@@ -82,8 +76,11 @@ public final class MaidNana extends JavaPlugin {
         });
 
         // 注册消息
+        channel.subscribeAlways(FriendMessageEvent.class, miscController::usage);
+
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::newAnnouncement);
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::selectAnnouncement);
+
         channel.subscribeAlways(FriendMessageEvent.class, templateController::newTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::deleteTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::modifyTemplate);
