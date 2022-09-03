@@ -28,6 +28,25 @@ public class TemplateService {
     }
 
     /**
+     * 创建模板
+     * @param template 模板文本
+     * @param alias 模板别名
+     * @return 新建的模板, 若别名已存在返回空
+     */
+    public Optional<Template> create(String template, String alias) {
+        var v = TemplateDao.getInstance().get(alias);
+        if (v.isPresent()) {
+            return Optional.empty();
+        }
+        var t = new Template();
+        t.setUuid(UUID.randomUUID());
+        t.setTemplate(template);
+        t.setAlias(alias);
+        TemplateDao.getInstance().add(t);
+        return Optional.of(t);
+    }
+
+    /**
      * 删除模板
      * @param templateID 要删除的模板 ID
      * @return 删除成功返回被删除的模板, 失败返回空
@@ -37,10 +56,21 @@ public class TemplateService {
     }
 
     /**
-     * @param templateID
+     * 获取模板
+     * @param templateID ID
+     * @return 获取到的模板, 不存在返回空
      */
-    public void get(UUID templateID) {
+    public Optional<Template> get(UUID templateID) {
+        return TemplateDao.getInstance().get(templateID);
+    }
 
+    /**
+     * 获取模板
+     * @param alias 别名
+     * @return 获取到的模板, 不存在返回空
+     */
+    public Optional<Template> get(String alias) {
+        return TemplateDao.getInstance().get(alias);
     }
 
     /**
