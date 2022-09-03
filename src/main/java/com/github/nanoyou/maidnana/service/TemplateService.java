@@ -1,9 +1,7 @@
 package com.github.nanoyou.maidnana.service;
 
-import com.github.nanoyou.maidnana.dao.AnnouncementDao;
 import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Template;
-import lombok.Getter;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -46,11 +44,19 @@ public class TemplateService {
     }
 
     /**
-     * @param templateID
-     * @param template
+     * 修改模板
+     * @param templateID 要修改的模板 ID
+     * @param template 模板体
+     * @return 修改成功返回被修改的模板, 失败返回空
      */
-    public void modify(UUID templateID, String template) {
-
+    public Optional<Template> modify(UUID templateID, String template) {
+        var t = TemplateDao.getInstance().get(templateID);
+        if (t.isEmpty()) {
+            return t;
+        }
+        var v = t.get();
+        v.setTemplate(template);
+        return Optional.of(TemplateDao.getInstance().modify(v));
     }
 
 }

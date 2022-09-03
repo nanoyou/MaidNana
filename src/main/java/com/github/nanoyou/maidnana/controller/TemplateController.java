@@ -1,5 +1,6 @@
 package com.github.nanoyou.maidnana.controller;
 
+import com.github.nanoyou.maidnana.constant.Usage;
 import com.github.nanoyou.maidnana.service.TemplateService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
@@ -50,19 +51,55 @@ public class TemplateController {
         }
         var line = event.getMessage().contentToString().split(" ");
         if (line.length < 2) {
-            event.getSender().sendMessage("命令格式错误, 用法: 删除模板 <模板UUID>");
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DELETE_TEMPLATE);
             return;
         }
         UUID templateID;
         try {
             templateID = UUID.fromString(line[1]);
         } catch (IllegalArgumentException e) {
-            event.getSender().sendMessage("命令格式错误, 用法: 删除模板 <模板UUID>");
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DELETE_TEMPLATE);
             return;
         }
         TemplateService.getInstance().delete(templateID).ifPresentOrElse(
                 r -> event.getSender().sendMessage("删除 " + line[1] + " 成功"),
                 () -> event.getSender().sendMessage("模板未找到")
         );
+    }
+
+    /**
+     * 修改模板<br />
+     * 命令格式:<br />
+     * 修改模板 &lt;模板UUID | 模板别名&gt;
+     * &lt;模板体(多行)&gt;
+     *
+     */
+    public void modifyTemplate(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("修改模板")) {
+            return;
+        }
+        var lines = event.getMessage().contentToString().split("\n", 2);
+        if (lines.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.MODIFY_TEMPLATE);
+            return;
+        }
+        var uuidStr= lines[0].replaceFirst("修改模板 ", "");
+        var body = lines[1];
+        if (body.equals("")) {
+            event.getSender().sendMessage("模板体不能为空");
+            return;
+        }
+        UUID templateID;
+        try {
+            templateID = UUID.fromString(uuidStr);
+        } catch (IllegalArgumentException e) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.MODIFY_TEMPLATE);
+            return;
+        }
+        TemplateService.getInstance().modify(templateID, body).ifPresentOrElse(
+                r -> event.getSender().sendMessage("修改" + r.getUuid().toString() + "成功"),
+                () -> event.getSender().sendMessage("模板未找到")
+        );
+
     }
 }
