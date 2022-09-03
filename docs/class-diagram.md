@@ -12,6 +12,7 @@ class PlainBody {
 PlainBody --|> Body
 class Template {
     +UUID uuid
+    +String alias                                                                                                           
     +String template
 }
 class TemplateBody {
@@ -26,6 +27,7 @@ class Trigger {
 }
 class Announcement {
     +UUID uuid
+    +String alias
     +List~Long~ groups
     +Body body
     +boolean enabled
@@ -47,14 +49,19 @@ class BaseDao~T extends Identifiable~ {
     -load()
     -save()
 }
+class AliasDao~T extends Aliasable~ {
+    +get(String alias)*
+    +delete(String alias)*
+}
+AliasDao --|> BaseDao
 class AnnouncementDao {
     +getInstance()$ AnnouncementDao
 }
-AnnouncementDao --|> BaseDao
+AnnouncementDao --|> AliasDao
 class TemplateDao {
     +getInstance()$ TemplateDao
 }
-TemplateDao --|> BaseDao
+TemplateDao --|> AliasDao
 ```
 
 ## Service
@@ -64,22 +71,36 @@ class AnnouncementService {
     +getInstance()$ AnnouncementService
     
     +create() Announcement
+    +create(String alias) Optional~Announcement~
     +get(UUID announcementID) Optional~Announcement~
+    +get(String alias) Optional~Announcement~
     +delete(UUID annoucementID) Optional~Announcement~
+    +delete(String alias) Optional~Announcement~
     +addGroup(UUID announcementID, long groupID) Optional~Announcement~
+    +addGroup(String alias, long groupID) Optional~Announcement~
     +removeGroup(UUID announcementID, long groupID) Optional~Announcement~
+    +removeGroup(String alias, long groupID) Optional~Announcement~
     +addTrigger(UUID announcementID, Trigger trigger) Optional~Announcement~
+    +addTrigger(String alias, Trigger trigger) Optional~Announcement~
     +removeTrigger(UUID announcementID, UUID triggerID) Optional~Announcement~
+    +removeTrigger(String alias, UUID triggerID) Optional~Announcement~
     +setBody(UUID annoucementID, Body body) Optional~Announcement~
+    +setBody(String alias, Body body) Optional~Announcement~
     +enable(UUID announcementID) Optional~Announcement~
+    +enable(String alias) Optional~Announcement~
     +disable(UUID announcementID) Optional~Announcement~
+    +disable(String alias) Optional~Announcement~
 }
 class TemplateService {
     +getInstance()$ TemplateService
     
     +create() Template
+    +create(String alias) Optional~Template~
     +delete(UUID templateID) Optional~Template~
+    +delete(String alias) Optional~Template~
     +get(UUID templateID) Optional~Template~
+    +get(String alias) Optional~Template~
     +modify(UUID templateID, String template) Optional~Template~
+    +modify(String alias, String template) Optional~Template~
 }
 ```
