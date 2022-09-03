@@ -27,13 +27,22 @@ public class AnnouncementService {
     }
 
     /**
-     * @param announcementID
-     * @return
+     * 获取公告
+     * @param announcementID ID
+     * @return 找到返回值, 未找到返回空
      */
     public Optional<Announcement> get(UUID announcementID) {
         return Optional.empty();
     }
 
+    /**
+     * 获取公告
+     * @param alias 别名
+     * @return 找到返回值, 未找到返回空
+     */
+    public Optional<Announcement> get(String alias) {
+        return Optional.empty();
+    }
     /**
      * @param announcementID
      * @return
