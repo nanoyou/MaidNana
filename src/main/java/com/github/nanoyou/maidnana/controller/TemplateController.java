@@ -72,9 +72,6 @@ public class TemplateController {
 
     /**
      * 删除模板<br />
-     * 命令格式:<br />
-     * 删除模板 &lt;模板UUID&gt;
-     *
      */
     public void deleteTemplate(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("删除模板")) {
@@ -85,16 +82,19 @@ public class TemplateController {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DELETE_TEMPLATE);
             return;
         }
-        UUID templateID;
-        try {
-            templateID = UUID.fromString(line[1]);
-        } catch (IllegalArgumentException e) {
-            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DELETE_TEMPLATE);
+        var template = getTemplate(line[1]);
+        if (template.isEmpty()) {
+            event.getSender().sendMessage("模板未找到");
             return;
         }
-        TemplateService.getInstance().delete(templateID).ifPresentOrElse(
-                r -> event.getSender().sendMessage("删除 " + line[1] + " 成功"),
-                () -> event.getSender().sendMessage("模板未找到")
+        TemplateService.getInstance().delete(template.get().getUuid()).ifPresent(
+                r -> {
+                    if (r.getAlias() == null) {
+                        event.getSender().sendMessage("删除 " + r.getUuid() + " 成功");
+                    } else {
+                        event.getSender().sendMessage("删除 " + r.getAlias() + "(" + r.getUuid() + ") 成功");
+                    }
+                }
         );
     }
 
