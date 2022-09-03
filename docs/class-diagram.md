@@ -66,13 +66,13 @@ class AnnouncementService {
     +create() Announcement
     +get(UUID announcementID) Optional~Announcement~
     +delete(UUID annoucementID) Optional~Announcement~
-    +addGroup(UUID announcementID, long groupID)
-    +removeGroup(UUID announcementID, long groupID)
-    +addTrigger(UUID announcementID, Trigger trigger)
-    +removeTrigger(UUID announcementID, UUID triggerID)
-    +setBody(UUID annoucementID, Body body)
-    +enable(UUID announcementID)
-    +disable(UUID announcementID)
+    +addGroup(UUID announcementID, long groupID) Optional~Announcement~
+    +removeGroup(UUID announcementID, long groupID) Optional~Announcement~
+    +addTrigger(UUID announcementID, Trigger trigger) Optional~Announcement~
+    +removeTrigger(UUID announcementID, UUID triggerID) Optional~Announcement~
+    +setBody(UUID annoucementID, Body body) Optional~Announcement~
+    +enable(UUID announcementID) Optional~Announcement~
+    +disable(UUID announcementID) Optional~Announcement~
 }
 class TemplateService {
     +getInstance()$ TemplateService
@@ -80,6 +80,6 @@ class TemplateService {
     +create() Template
     +delete(UUID templateID) Optional~Template~
     +get(UUID templateID) Optional~Template~
-    +modify(UUID templateID, String template) Template
+    +modify(UUID templateID, String template) Optional~Template~
 }
 ```
