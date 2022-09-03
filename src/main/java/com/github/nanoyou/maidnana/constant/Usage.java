@@ -16,10 +16,13 @@ public class Usage {
     public static final String DISABLE_ANNOUNCEMENT = "禁用公告 - 暂停定时公告的发布*";
     public static final String NEW_TRIGGER = "新建触发器 <cron表达式> - 新建触发器*";
     public static final String DELETE_TRIGGER = "删除触发器 [触发器UUID]... - 删除触发器, 若不指定UUID则删除全部*";
+    public static final String PREVIEW = "预览 - 预览公告变量替换后结果*";
+    public static final String SHOW_ANNOUNCEMENT = "查看公告 - 查看公告信息*";
     // TemplateController
     public static final String NEW_TEMPLATE = "新建模板 [模板别名]\n<模板体(多行)> - 新建公告模板, 使用'$'定义变量, 如$name$";
     public static final String DELETE_TEMPLATE = "删除模板 <模板UUID | 模板别名> - 删除公告模板";
     public static final String MODIFY_TEMPLATE = "修改模板 <模板UUID | 模板别名>\n<模板体(多行)> - 修改指定的模板";
+    public static final String SHOW_TEMPLATE = "查看模板 <模板UUID | 模板别名> - 查看模板信息";
     public static final String LIST_TEMPLATES = "模板列表 - 查看模板列表";
     // 帮助信息
     public static final String USAGE = "MaidNana - ver "
@@ -35,11 +38,14 @@ public class Usage {
             + SET_TEMPLATE_BODY + "\n"
             + ENABLE_ANNOUNCEMENT + "\n"
             + DISABLE_ANNOUNCEMENT + "\n"
+            + PREVIEW + "\n"
+            + SHOW_ANNOUNCEMENT + "\n"
             + NEW_TRIGGER + "\n"
             + DELETE_TRIGGER + "\n"
             + NEW_TEMPLATE + "\n"
             + DELETE_TEMPLATE + "\n"
             + MODIFY_TEMPLATE + "\n"
+            + SHOW_TEMPLATE + "\n"
             + LIST_TEMPLATES;
 
 }
