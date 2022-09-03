@@ -132,4 +132,28 @@ public class TemplateController {
         );
 
     }
+
+    /**
+     *  查看模板列表
+     */
+    public void listTemplates(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("模板列表")) {
+            return;
+        }
+        TemplateService.getInstance().getAll().forEach(template -> {
+            var r = new StringBuilder();
+            r.append("模板 ");
+            if (template.getAlias() == null) {
+                r.append(template.getUuid());
+            } else {
+                r.append(template.getAlias());
+                r.append('(');
+                r.append(template.getUuid());
+                r.append(')');
+            }
+            r.append('\n');
+            r.append(template.getTemplate());
+            event.getSender().sendMessage(r.toString());
+        });
+    }
 }

@@ -84,6 +84,7 @@ public final class MaidNana extends JavaPlugin {
         channel.subscribeAlways(FriendMessageEvent.class, templateController::newTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::deleteTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::modifyTemplate);
+        channel.subscribeAlways(FriendMessageEvent.class, templateController::listTemplates);
     }
     // 初始化文件
     private void initFiles() {

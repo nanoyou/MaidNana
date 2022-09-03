@@ -3,6 +3,7 @@ package com.github.nanoyou.maidnana.service;
 import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Template;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -87,6 +88,14 @@ public class TemplateService {
         var v = t.get();
         v.setTemplate(template);
         return Optional.of(TemplateDao.getInstance().modify(v));
+    }
+
+    /**
+     * 获取全部模板
+     * @return 模板列表
+     */
+    public List<Template> getAll() {
+        return TemplateDao.getInstance().getAll();
     }
 
 }
