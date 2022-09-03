@@ -5,6 +5,7 @@ import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Template;
 import lombok.Getter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class TemplateService {
@@ -17,6 +18,7 @@ public class TemplateService {
 
     /**
      * 创建模板
+     * @param template 模板文本
      * @return 新建的模板
      */
     public Template create(String template) {
@@ -28,10 +30,12 @@ public class TemplateService {
     }
 
     /**
-     * @param templateID
+     * 删除模板
+     * @param templateID 要删除的模板 ID
+     * @return 删除成功返回被删除的模板, 失败返回空
      */
-    public void delete(UUID templateID) {
-
+    public Optional<Template> delete(UUID templateID) {
+        return TemplateDao.getInstance().delete(templateID);
     }
 
     /**
