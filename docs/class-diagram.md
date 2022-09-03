@@ -65,7 +65,7 @@ class AnnouncementService {
     
     +create() Announcement
     +get(UUID announcementID) Optional~Announcement~
-    +delete(UUID annoucementID) Announcement
+    +delete(UUID annoucementID) Optional~Announcement~
     +addGroup(UUID announcementID, long groupID)
     +removeGroup(UUID announcementID, long groupID)
     +addTrigger(UUID announcementID, Trigger trigger)
@@ -78,7 +78,7 @@ class TemplateService {
     +getInstance()$ TemplateService
     
     +create() Template
-    +delete(UUID templateID) Template
+    +delete(UUID templateID) Optional~Template~
     +get(UUID templateID) Optional~Template~
     +modify(UUID templateID, String template) Template
 }
