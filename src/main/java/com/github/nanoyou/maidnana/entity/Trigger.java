@@ -14,9 +14,5 @@ import java.util.UUID;
 public class Trigger implements Identifiable {
     private UUID uuid;
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
     private String cron;
 }
