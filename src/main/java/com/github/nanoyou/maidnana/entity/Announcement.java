@@ -12,12 +12,9 @@ import java.util.UUID;
  * @author Huang Samuel
  */
 @Data
-public class Announcement implements Identifiable {
+public class Announcement implements Aliasable {
     private UUID uuid;
-
-    public UUID getUuid() {
-        return uuid;
-    }
+    private String alias;
 
     private List<Long> groups;
     private Body body;

@@ -11,12 +11,9 @@ import java.util.UUID;
  * @author Huang Samuel
  */
 @Data
-public class Template implements Identifiable{
+public class Template implements Aliasable{
     private UUID uuid;
-
-    public UUID getUuid() {
-        return uuid;
-    }
+    private String alias;
 
     private String template;
 }
