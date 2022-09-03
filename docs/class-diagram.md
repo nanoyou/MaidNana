@@ -90,6 +90,7 @@ class AnnouncementService {
     +enable(String alias) Optional~Announcement~
     +disable(UUID announcementID) Optional~Announcement~
     +disable(String alias) Optional~Announcement~
+    +getAll() List~Announcement~
 }
 class TemplateService {
     +getInstance()$ TemplateService
@@ -102,5 +103,6 @@ class TemplateService {
     +get(String alias) Optional~Template~
     +modify(UUID templateID, String template) Optional~Template~
     +modify(String alias, String template) Optional~Template~
+    +getAll() List~Template~
 }
 ```
