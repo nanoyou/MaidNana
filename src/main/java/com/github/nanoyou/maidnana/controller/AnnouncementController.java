@@ -19,6 +19,11 @@ public class AnnouncementController {
         return instance;
     }
 
+    /**
+     * 通过 UUID 或别名自动获取公告
+     * @param uuidOrAlias UUID 或别名
+     * @return 公告
+     */
     private Optional<Announcement> getAnnouncement(String uuidOrAlias) {
         try {
             var uuid = UUID.fromString(uuidOrAlias);

@@ -15,6 +15,11 @@ public class TemplateController {
         return instance;
     }
 
+    /**
+     * 通过 UUID 或别名自动获取模板
+     * @param uuidOrAlias UUID 或别名
+     * @return 模板
+     */
     private Optional<Template> getTemplate(String uuidOrAlias) {
         try {
             var uuid = UUID.fromString(uuidOrAlias);
