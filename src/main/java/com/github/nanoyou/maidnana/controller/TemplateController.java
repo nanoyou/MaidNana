@@ -134,26 +134,53 @@ public class TemplateController {
     }
 
     /**
-     *  查看模板列表
+     * 格式化模板
+     * @param template 模板
+     * @return 转化后的字符串
+     */
+    private String formatTemplate(Template template) {
+        var r = new StringBuilder();
+        r.append("模板 ");
+        if (template.getAlias() == null) {
+            r.append(template.getUuid());
+        } else {
+            r.append(template.getAlias());
+            r.append('(');
+            r.append(template.getUuid());
+            r.append(')');
+        }
+        r.append('\n');
+        r.append(template.getTemplate());
+        return r.toString();
+    }
+
+    /**
+     * 查看模板信息
+     */
+    public void showTemplate(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("查看模板")) {
+            return;
+        }
+        var idOrAlias = event.getMessage().contentToString().replaceFirst("查看模板\\s*", "");
+        if ("".equals(idOrAlias)) {
+            event.getSender().sendMessage("格式错误, 用法:\n" + Usage.SHOW_TEMPLATE);
+            return;
+        }
+        getTemplate(idOrAlias).ifPresentOrElse(
+                r -> event.getSender().sendMessage(formatTemplate(r)),
+                () -> event.getSender().sendMessage("模板未找到")
+        );
+    }
+
+    /**
+     * 查看模板列表
      */
     public void listTemplates(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("模板列表")) {
             return;
         }
-        TemplateService.getInstance().getAll().forEach(template -> {
-            var r = new StringBuilder();
-            r.append("模板 ");
-            if (template.getAlias() == null) {
-                r.append(template.getUuid());
-            } else {
-                r.append(template.getAlias());
-                r.append('(');
-                r.append(template.getUuid());
-                r.append(')');
-            }
-            r.append('\n');
-            r.append(template.getTemplate());
-            event.getSender().sendMessage(r.toString());
-        });
+        TemplateService.getInstance().getAll().forEach(template ->
+            event.getSender().sendMessage(formatTemplate(template))
+        );
     }
 }
