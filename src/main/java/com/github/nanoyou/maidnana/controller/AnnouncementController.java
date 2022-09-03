@@ -46,7 +46,7 @@ public class AnnouncementController {
         getAnnouncement(line[1]).ifPresentOrElse(
                 a -> {
                     selectedAnnouncement.put(event.getSender().getId(), a);
-                    if (a.getAlias() != null && !"".equals(a.getAlias())) {
+                    if (a.getAlias() != null) {
                         event.getSender().sendMessage("选择公告: " + a.getAlias() + "(" + a.getUuid().toString() + ")");
                     } else {
                         event.getSender().sendMessage("选择公告: " + a.getUuid().toString());
