@@ -94,8 +94,8 @@ class AnnouncementService {
 class TemplateService {
     +getInstance()$ TemplateService
     
-    +create() Template
-    +create(String alias) Optional~Template~
+    +create(String template) Template
+    +create(String template, String alias) Optional~Template~
     +delete(UUID templateID) Optional~Template~
     +delete(String alias) Optional~Template~
     +get(UUID templateID) Optional~Template~
