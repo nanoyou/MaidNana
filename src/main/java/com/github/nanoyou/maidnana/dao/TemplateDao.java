@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.Collection;
 
-public class TemplateDao extends BaseDao<Template> {
+public class TemplateDao extends AliasDao<Template> {
     private static TemplateDao instance = new TemplateDao();
 
     public static TemplateDao getInstance() {

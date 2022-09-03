@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.Collection;
 
-public class AnnouncementDao extends BaseDao<Announcement> {
+public class AnnouncementDao extends AliasDao<Announcement> {
     private static AnnouncementDao instance = null;
     public static AnnouncementDao getInstance() {
         if (instance == null) {
