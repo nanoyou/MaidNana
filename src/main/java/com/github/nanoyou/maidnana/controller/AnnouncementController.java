@@ -343,7 +343,7 @@ public class AnnouncementController {
         body.setTemplateID(optTemplate.get().getUuid());
         var vars = new HashMap<String, String>();
         Arrays.stream(line).skip(1).forEach(row -> {
-            var keyAndValue = row.split("=", 2);
+            var keyAndValue = row.split("\\s*=\\s*", 2);
             if (keyAndValue.length < 2) {
                 return;
             }
