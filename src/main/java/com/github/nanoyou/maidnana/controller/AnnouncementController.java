@@ -3,6 +3,7 @@ package com.github.nanoyou.maidnana.controller;
 import com.github.nanoyou.maidnana.constant.Usage;
 import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.entity.Body;
+import com.github.nanoyou.maidnana.entity.PlainBody;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
@@ -132,6 +133,7 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
+    // TODO: TEST
     public void deleteAnnouncement(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("删除公告")) {
@@ -156,6 +158,7 @@ public class AnnouncementController {
      *
      * @param event
      */
+    // TODO: TEST
     public void selectAnnouncements(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
@@ -184,6 +187,7 @@ public class AnnouncementController {
      *
      * @param event
      */
+    // TODO: TEST
     public void setGroupAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("设置群")) {
             return;
@@ -221,6 +225,7 @@ public class AnnouncementController {
      *
      * @param event
      */
+    // TODO: TEST
     public void unsetGroupAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("取消群")) {
             return;
@@ -259,17 +264,20 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
+    // TODO: TEST
     public void setPlainBody(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("纯文本公告")) {
             return;
         }
 
-        Body body = () -> event.getMessage().contentToString().substring(5);
+        var pb = new PlainBody();
+        var content = event.getMessage().contentToString().split("\n", 2)[1];
+        pb.setContent(content);
 
         getSelectedAnnouncement(event).ifPresentOrElse(
                 a -> {
-                    AnnouncementService.getInstance().setBody(a.getUuid(), body);
+                    AnnouncementService.getInstance().setBody(a.getUuid(), pb);
                     event.getSender().sendMessage("纯文本公告设置成功");
                 },
                 () -> {
@@ -279,7 +287,7 @@ public class AnnouncementController {
     }
 
     public void setTemplateBody(FriendMessageEvent event) {
-        
+
     }
 
 }
