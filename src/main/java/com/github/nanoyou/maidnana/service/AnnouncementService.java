@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.TestOnly;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class AnnouncementService {
     private final static AnnouncementService instance = new AnnouncementService();
+
     public static AnnouncementService getInstance() {
         return instance;
     }
@@ -28,6 +30,7 @@ public class AnnouncementService {
 
     /**
      * 获取公告
+     *
      * @param announcementID ID
      * @return 找到返回值, 未找到返回空
      */
@@ -37,12 +40,26 @@ public class AnnouncementService {
 
     /**
      * 获取公告
+     *
      * @param alias 别名
      * @return 找到返回值, 未找到返回空
      */
     public Optional<Announcement> get(String alias) {
         return Optional.empty();
     }
+
+    /**
+     * 按照用户ID返回其注册过的所有公告
+     *
+     * @param userID QQ账号
+     * @return
+     */
+    public Optional<List<Announcement>> getAll(long userID) {
+        // TODO 按照用户ID返回其注册过的所有公告
+        return Optional.empty();
+    }
+
+
     /**
      * @param announcementID
      * @return
