@@ -5,6 +5,7 @@ import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.entity.Body;
 import com.github.nanoyou.maidnana.entity.PlainBody;
 import com.github.nanoyou.maidnana.entity.Template;
+import com.github.nanoyou.maidnana.entity.*;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
 import com.github.nanoyou.maidnana.service.TemplateService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
@@ -292,7 +293,36 @@ public class AnnouncementController {
     }
 
     public void setTemplateBody(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("模板公告")) {
+            return;
+        }
+        String[] line = event.getMessage().contentToString().split(" ");
 
+        if (line.length < 3) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_TEMPLATE_BODY);
+            return;
+        }
+
+
+        //line[1]
+
+
+//        AnnouncementService.getInstance().get(UUID.fromString(line[1])).ifPresentOrElse(
+//                a -> {
+//
+//                },
+//                () -> {
+//                    TemplateBody tb = new TemplateBody();
+//                    tb.setTemplateID(UUID.randomUUID());
+//                    Map<String, String> map = new HashMap<>();
+//
+//                    for (int i = 2; i < line.length; i++) {
+//                        var kv = line[i].split("=", 2);
+//                        map.put(kv[0], kv[1]);
+//                    }
+//
+//                }
+//        );
     }
 
 }
