@@ -494,4 +494,21 @@ public class AnnouncementController {
                 () -> event.getSender().sendMessage("未选择任何公告")
         );
     }
+
+
+    public void setVariable(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("设置变量")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split(" ");
+
+        var vars = new HashMap<String, String>();
+        Arrays.stream(line).skip(1).forEach(row -> {
+            var keyAndValue = row.split("\\s*=\\s*", 2);
+            if (keyAndValue.length < 2) {
+                return;
+            }
+            vars.put(keyAndValue[0], keyAndValue[1]);
+        });
+    }
 }
