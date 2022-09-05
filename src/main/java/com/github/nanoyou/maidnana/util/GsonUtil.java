@@ -58,13 +58,15 @@ public class GsonUtil {
                     }
                     Body body;
                     if ("plain".equals(type)) {
-                        PlainBody plainBody = new PlainBody();
+                        var plainBody = new PlainBody();
                         plainBody.setContent((String) r.get("content"));
                         body = plainBody;
                     } else {
-                        TemplateBody templateBody = new TemplateBody();
-                        var uuid = (UUID) r.get("template");
-                        templateBody.setTemplateID(uuid);
+                        var templateBody = new TemplateBody();
+                        var uuid = (String) r.get("template");
+                        if (uuid != null) {
+                            templateBody.setTemplateID(UUID.fromString(uuid));
+                        }
                         templateBody.setVar(new HashMap<String, String>((Map) r.get("var")));
 
                         body = templateBody;
