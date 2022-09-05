@@ -512,6 +512,12 @@ public class AnnouncementController {
                     var tb = ((TemplateBody) body);
                     Arrays.stream(line).skip(1).forEach(kv -> {
                         var skv = kv.split("\\s*=\\s*", 2);
+                        if (skv.length < 1) {
+                            return;
+                        }
+                        if (skv.length < 2) {
+                            tb.getVar().put(skv[0], "");
+                        }
                         tb.getVar().put(skv[0], skv[1]);
                     });
                     a.setBody(tb);
