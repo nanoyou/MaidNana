@@ -5,6 +5,7 @@ import net.mamoe.mirai.event.events.FriendMessageEvent;
 
 public class MiscController {
     private static final MiscController instance = new MiscController();
+
     public static MiscController getInstance() {
         return instance;
     }
@@ -14,5 +15,9 @@ public class MiscController {
             return;
         }
         event.getSender().sendMessage(Usage.USAGE);
+    }
+
+    public void p() {
+
     }
 }

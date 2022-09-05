@@ -5,10 +5,7 @@ import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class AnnouncementController {
     private static final AnnouncementController instance = new AnnouncementController();
@@ -21,6 +18,7 @@ public class AnnouncementController {
 
     /**
      * 通过 UUID 或别名自动获取公告
+     *
      * @param uuidOrAlias UUID 或别名
      * @return 公告
      */
@@ -33,12 +31,23 @@ public class AnnouncementController {
         }
     }
 
+    /**
+     * 新建一个公告
+     *
+     * @param event 好友信息事件
+     */
     public void newAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("新建公告")) {
             return;
         }
         event.getSender().sendMessage("新建公告!");
     }
+
+    /**
+     * 选择已有公告
+     *
+     * @param event 好友信息事件
+     */
     public void selectAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("选择公告")) {
             return;
@@ -60,4 +69,27 @@ public class AnnouncementController {
                 () -> event.getSender().sendMessage("未找到公告")
         );
     }
+
+    /**
+     * 删除指定的公告。此方法会遍历所有选中的公告。
+     *
+     * @param event 好友信息事件
+     */
+    public void deleteAnnouncement(FriendMessageEvent event) {
+
+        if (!event.getMessage().contentToString().startsWith("删除公告")) {
+            return;
+        }
+
+        if (selectedAnnouncement.isEmpty()) {
+            event.getSender().sendMessage("未选择任何公告");
+        }
+
+        selectedAnnouncement.forEach((k, v) -> {
+            AnnouncementService.getInstance().delete(v.getUuid());
+        });
+
+        event.getSender().sendMessage("已删除选定公告");
+    }
+
 }
