@@ -365,7 +365,11 @@ public class AnnouncementController {
         var vars = new HashMap<String, String>();
         Arrays.stream(line).skip(1).forEach(row -> {
             var keyAndValue = row.split("\\s*=\\s*", 2);
+            if (keyAndValue.length < 1) {
+                return;
+            }
             if (keyAndValue.length < 2) {
+                vars.put(keyAndValue[0], "");
                 return;
             }
             vars.put(keyAndValue[0], keyAndValue[1]);
