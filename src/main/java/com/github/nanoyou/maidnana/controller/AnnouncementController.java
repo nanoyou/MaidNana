@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class AnnouncementController {
     private static final AnnouncementController instance = new AnnouncementController();
 
-    private final Map<Long, Announcement> selectedAnnouncement = new HashMap<>();
+    private final Map<Long, UUID> selectedAnnouncement = new HashMap<>();
 
     public static AnnouncementController getInstance() {
         return instance;
@@ -100,7 +100,7 @@ public class AnnouncementController {
             event.getSender().sendMessage("请先选择公告");
             return Optional.empty();
         }
-        var optAnn = AnnouncementService.getInstance().get(ann.getUuid());
+        var optAnn = AnnouncementService.getInstance().get(ann);
         if (optAnn.isEmpty()) {
             event.getSender().sendMessage("公告已被删除");
         }
@@ -120,21 +120,26 @@ public class AnnouncementController {
 
         var line = event.getMessage().contentToString().split(" ");
 
-        if (line.length > 2) {
+        if (line.length < 1) {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_ANNOUNCEMENT);
             return;
         }
 
+        Announcement a;
         if (line.length == 1) {
-            var a = AnnouncementService.getInstance().create();
+            a = AnnouncementService.getInstance().create();
             event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid());
-        }
-
-        if (line.length == 2) {
-            var a = AnnouncementService.getInstance().create();
-            a.setAlias(line[1]);
+        } else {
+            var optAnn = AnnouncementService.getInstance().create(line[2]);
+            if (optAnn.isEmpty()) {
+                event.getSender().sendMessage("公告别名已存在");
+                return;
+            }
+            a = optAnn.get();
             event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid() + "\n别名为“" + a.getAlias() + "”");
         }
+
+        selectedAnnouncement.put(event.getSender().getId(), a.getUuid());
 
     }
 
@@ -154,7 +159,7 @@ public class AnnouncementController {
         }
         getAnnouncement(line[1]).ifPresentOrElse(
                 a -> {
-                    selectedAnnouncement.put(event.getSender().getId(), a);
+                    selectedAnnouncement.put(event.getSender().getId(), a.getUuid());
                     if (a.getAlias() != null) {
                         event.getSender().sendMessage("选择公告: " + a.getAlias() + "(" + a.getUuid().toString() + ")");
                     } else {
@@ -177,15 +182,12 @@ public class AnnouncementController {
             return;
         }
 
-        if (selectedAnnouncement.isEmpty()) {
-            event.getSender().sendMessage("未选择任何公告");
+        var optAnn = getSelectedAnnouncement(event);
+        if (optAnn.isEmpty()) {
+            return;
         }
 
-        selectedAnnouncement.forEach((k, v) -> {
-            if (k.equals(event.getSender().getId())) {
-                AnnouncementService.getInstance().delete(v.getUuid());
-            }
-        });
+        AnnouncementService.getInstance().delete(optAnn.get().getUuid());
 
         event.getSender().sendMessage("已删除选定公告");
     }
