@@ -2,6 +2,7 @@ package com.github.nanoyou.maidnana.controller;
 
 import com.github.nanoyou.maidnana.constant.Usage;
 import com.github.nanoyou.maidnana.entity.Announcement;
+import com.github.nanoyou.maidnana.entity.Body;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
@@ -144,7 +145,7 @@ public class AnnouncementController {
             sb.append("UUID  ").append(a.getUuid());
         });
         event.getSender().sendMessage(sb.toString());
-        
+
     }
 
     /**
@@ -218,11 +219,23 @@ public class AnnouncementController {
     }
 
     public void setPlainBody(FriendMessageEvent event) {
+
         if (!event.getMessage().contentToString().startsWith("纯文本公告")) {
             return;
         }
 
-        String content = event.getMessage().contentToString().substring(5);
+        Body body = () -> event.getMessage().contentToString().substring(5);
+
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    AnnouncementService.getInstance().setBody(a.getUuid(), body);
+                    event.getSender().sendMessage("纯文本公告设置成功");
+                },
+                () -> {
+                    event.getSender().sendMessage("未选择任何公告");
+                }
+        );
+
 
     }
 }
