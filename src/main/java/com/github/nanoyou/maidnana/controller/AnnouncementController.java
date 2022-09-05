@@ -76,7 +76,25 @@ public class AnnouncementController {
         sb.append(announcement.getTriggers().stream().map(Objects::toString).collect(Collectors.joining("\n")));
         sb.append('\n');
         sb.append("公告体:\n");
-        sb.append(announcement.getBody());
+        if (announcement.getBody() == null) {
+            sb.append("[未设置]");
+        } else if (announcement.getBody() instanceof PlainBody) {
+            sb.append(announcement.getBody().getBodyString());
+        } else {
+            var body = (TemplateBody) announcement.getBody();
+            TemplateService.getInstance().get(body.getTemplateID()).ifPresentOrElse(
+                    template -> sb.append(template.getTemplate()),
+                    () -> sb.append("模板被删除")
+            );
+            sb.append("\n变量列表:\n");
+            body.getVar().forEach((k, v) -> {
+                sb.append(k);
+                sb.append(" = ");
+                sb.append(v);
+                sb.append('\n');
+            });
+
+        }
 
         return sb.toString();
     }
@@ -290,7 +308,6 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
-    // TODO: TEST
     public void setPlainBody(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("纯文本公告")) {
@@ -298,7 +315,12 @@ public class AnnouncementController {
         }
 
         var pb = new PlainBody();
-        var content = event.getMessage().contentToString().split("\n", 2)[1];
+        var lines = event.getMessage().contentToString().split("\n", 2);
+        if (lines.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_PLAIN_BODY);
+            return;
+        }
+        var content = lines[1];
         pb.setContent(content);
 
         getSelectedAnnouncement(event).ifPresent(
