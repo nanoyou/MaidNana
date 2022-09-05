@@ -7,8 +7,6 @@ import java.util.UUID;
 
 /**
  * Entity - TemplateBody
- *
- * @author Huang Samuel
  */
 @Data
 public class TemplateBody implements Body{
@@ -26,15 +24,15 @@ public class TemplateBody implements Body{
      * 腾讯会议号: $meeting_number$
      * ---------------------
      * 变量为:
-     * name = 概率论
-     * meeting_number = 114514
+     * name = Gay ♂ 率论
+     * meeting_number = 1145-5141-9198
      *
      * 结果为:
      *
      * ------[上课提醒]------
-     * 课程名称: 概率论
+     * 课程名称: Gay ♂ 率论
      *
-     * 腾讯会议号: 114514
+     * 腾讯会议号: 1145-5141-9198 (这么臭的会议号还有存在的必要么（恼）)
      * ---------------------
      * @return The body string.
      */
