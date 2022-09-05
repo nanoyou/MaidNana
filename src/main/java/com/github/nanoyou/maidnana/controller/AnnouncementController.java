@@ -317,33 +317,39 @@ public class AnnouncementController {
         if (!event.getMessage().contentToString().startsWith("模板公告")) {
             return;
         }
-        String[] line = event.getMessage().contentToString().split(" ");
+        String[] line = event.getMessage().contentToString().split("\n");
+        String[] firstLine = line[0].split(" ");
 
-        if (line.length < 3) {
+        if (firstLine.length < 2) {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_TEMPLATE_BODY);
             return;
         }
+        var optTemplate = getTemplate(firstLine[1]);
+        if (optTemplate.isEmpty()) {
+            event.getSender().sendMessage("模板不存在");
+            return;
+        }
+        var optAnn = getSelectedAnnouncement(event);
+        if (optAnn.isEmpty()) {
+            return;
+        }
+
+        var body = new TemplateBody();
+        body.setTemplateID(optTemplate.get().getUuid());
+        var vars = new HashMap<String, String>();
+        Arrays.stream(line).skip(1).forEach(row -> {
+            var keyAndValue = row.split("=", 2);
+            if (keyAndValue.length < 2) {
+                return;
+            }
+            vars.put(keyAndValue[0], keyAndValue[1]);
+        });
+        body.setVar(vars);
+        AnnouncementService.getInstance().setBody(optAnn.get().getUuid(), body).ifPresent(ann -> {
+            event.getSender().sendMessage("设置成功! 预览:\n" + ann.getBody().getBodyString());
+        });
 
 
-        //line[1]
-
-
-//        AnnouncementService.getInstance().get(UUID.fromString(line[1])).ifPresentOrElse(
-//                a -> {
-//
-//                },
-//                () -> {
-//                    TemplateBody tb = new TemplateBody();
-//                    tb.setTemplateID(UUID.randomUUID());
-//                    Map<String, String> map = new HashMap<>();
-//
-//                    for (int i = 2; i < line.length; i++) {
-//                        var kv = line[i].split("=", 2);
-//                        map.put(kv[0], kv[1]);
-//                    }
-//
-//                }
-//        );
     }
 
 }
