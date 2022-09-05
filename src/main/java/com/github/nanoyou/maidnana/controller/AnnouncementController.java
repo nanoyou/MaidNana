@@ -225,6 +225,11 @@ public class AnnouncementController {
         );
     }
 
+    /**
+     * 设置指定公告的纯文本体
+     *
+     * @param event 好友信息事件
+     */
     public void setPlainBody(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("纯文本公告")) {
