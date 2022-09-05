@@ -135,12 +135,20 @@ public class AnnouncementController {
             return;
         }
 
+        List<Long> groupIds = new ArrayList<>();
+
+        try {
+            for (int i = 1; i < line.length; i++) {
+                groupIds.add(Long.valueOf(line[i]));
+            }
+        } catch (Exception e) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_GROUP);
+            return;
+        }
+
         selectedAnnouncement.forEach(
                 (k, v) -> {
-                    for (int i = 1; i < line.length; i++) {
-                        long groupId = Long.valueOf(line[i]);
-                        AnnouncementService.getInstance().addGroup(v.getUuid(), groupId);
-                    }
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(v.getUuid(), groupId));
                 }
         );
 
