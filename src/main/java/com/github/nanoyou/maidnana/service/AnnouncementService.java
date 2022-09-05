@@ -119,12 +119,10 @@ public class AnnouncementService {
         var ansment = get(announcementID);
         if(ansment.isPresent()){
             var groups = ansment.get().getGroups();
-            if (groups.stream().anyMatch(e -> e.equals(groupID)))
-                groups.removeIf(e -> e.equals(groupID));
-            else {
+            if (groups.stream().noneMatch(e -> e.equals(groupID)))
                 return Optional.empty();
-            }
 
+            groups.removeIf(e -> e.equals(groupID));
             ansment.get().setGroups(groups);
             dao.modify(ansment.get());
         }
@@ -141,9 +139,10 @@ public class AnnouncementService {
         var ansment = get(alias);
         if(ansment.isPresent()){
             var groups = ansment.get().getGroups();
-            if (groups.stream().anyMatch(e -> e.equals(groupID)))
-                groups.removeIf(e -> e.equals(groupID));
+            if (groups.stream().noneMatch(e -> e.equals(groupID)))
+                return Optional.empty();
 
+            groups.removeIf(e -> e.equals(groupID));
             ansment.get().setGroups(groups);
             dao.modify(ansment.get());
         }
@@ -194,14 +193,16 @@ public class AnnouncementService {
      *
      * @param announcementID 公告ID
      * @param triggerID      触发器ID
+     * @return 修改后的公告，若找不到则返回空容器？
      */
     public Optional<Announcement> removeTrigger(UUID announcementID, UUID triggerID) {
         var ansment = get(announcementID);
         if(ansment.isPresent()){
             var triggers = ansment.get().getTriggers();
-            if (triggers.stream().anyMatch(e -> e.getUuid().equals(triggerID)))
-                triggers.removeIf(e->e.getUuid().equals(triggerID));
+            if (triggers.stream().noneMatch(e -> e.getUuid().equals(triggerID)))
+                return Optional.empty();
 
+            triggers.removeIf(e->e.getUuid().equals(triggerID));
             ansment.get().setTriggers(triggers);
             dao.modify(ansment.get());
         }
@@ -211,14 +212,16 @@ public class AnnouncementService {
      *
      * @param alias 别名
      * @param triggerID 触发器ID
+     * @return 修改后的公告，若找不到则返回空容器？
      */
     public Optional<Announcement> removeTrigger(String alias, UUID triggerID) {
         var ansment = get(alias);
         if(ansment.isPresent()){
             var triggers = ansment.get().getTriggers();
-            if (triggers.stream().anyMatch(e -> e.getUuid().equals(triggerID)))
-                triggers.removeIf(e->e.getUuid().equals(triggerID));
+            if (triggers.stream().noneMatch(e -> e.getUuid().equals(triggerID)))
+                return Optional.empty();
 
+            triggers.removeIf(e->e.getUuid().equals(triggerID));
             ansment.get().setTriggers(triggers);
             dao.modify(ansment.get());
         }

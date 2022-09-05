@@ -1,9 +1,11 @@
 package com.github.nanoyou.maidnana.entity;
 
+import com.github.nanoyou.maidnana.service.TemplateService;
 import lombok.Data;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Entity - TemplateBody
@@ -38,7 +40,14 @@ public class TemplateBody implements Body{
      */
     @Override
     public String getBodyString() {
-        // TODO 将 template 所有值替换后返回
-        return null;
+        var service = TemplateService.getInstance();
+        var template = service.get(templateID);
+        if(template.isEmpty()) return "";
+
+        var bodyString = template.get().getTemplate();
+        var.forEach((k,v)->{
+            bodyString.replaceAll("$"+k+"$",v);
+        });
+        return bodyString;
     }
 }
