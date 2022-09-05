@@ -484,20 +484,35 @@ public class AnnouncementController {
         );
     }
 
+    //TODO: Test
+
+    /**
+     * @param event
+     */
 
     public void setVariable(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("设置变量")) {
             return;
         }
-        var line = event.getMessage().contentToString().split(" ");
+        var line = event.getMessage().contentToString().split("\n");
 
-        var vars = new HashMap<String, String>();
-        Arrays.stream(line).skip(1).forEach(row -> {
-            var keyAndValue = row.split("\\s*=\\s*", 2);
-            if (keyAndValue.length < 2) {
-                return;
-            }
-            vars.put(keyAndValue[0], keyAndValue[1]);
-        });
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    var body = a.getBody();
+                    if (!(body instanceof TemplateBody)) {
+                        event.getSender().sendMessage("当前选中的公告不能作为模板");
+                        return;
+                    }
+                    var tb = ((TemplateBody) body);
+                    Arrays.stream(line).skip(1).forEach(kv -> {
+                        var skv = kv.split("=");
+                        tb.getVar().put(skv[0], skv[1]);
+                    });
+                    a.setBody(tb);
+                    event.getSender().sendMessage("变量设置成功");
+                },
+                () -> {
+                }
+        );
     }
 }
