@@ -42,12 +42,12 @@ public class AnnouncementController {
 
     /**
      * 获取该用户选择的公告, 若未选择或公告失效(已删除)会自动回复消息, 直接 return 即可<br />
-     * 例:
-     * ...
-     * var announcement = getSelectedAnnouncement(event);
-     * if (announcement.isEmpty()) {
-     *     return;
-     * }
+     * 例:<br />
+     * ...<br />
+     * var announcement = getSelectedAnnouncement(event);<br />
+     * if (announcement.isEmpty()) {<br />
+     * &nbsp;&nbsp;&nbsp;&nbsp;return;<br />
+     * }<br />
      * ...
      * @param event 事件
      * @return 如果获取到返回公告, 已失效/未选择返回空
