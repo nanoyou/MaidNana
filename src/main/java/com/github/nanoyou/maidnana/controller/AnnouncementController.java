@@ -130,9 +130,13 @@ public class AnnouncementController {
             a = AnnouncementService.getInstance().create();
             event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid());
         } else {
-            var optAnn = AnnouncementService.getInstance().create(line[2]);
+            var optAnn = AnnouncementService.getInstance().create(line[1]);
             if (optAnn.isEmpty()) {
                 event.getSender().sendMessage("公告别名已存在");
+                return;
+            }
+            if ("".equals(line[1])) {
+                event.getSender().sendMessage("别名不能为空");
                 return;
             }
             a = optAnn.get();
