@@ -178,7 +178,6 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
-    // TODO: TEST
     public void deleteAnnouncement(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("删除公告")) {
@@ -198,9 +197,8 @@ public class AnnouncementController {
     /**
      * 查看公告列表
      *
-     * @param event
+     * @param event 好友信息事件
      */
-    // TODO: TEST
     public void listAnnouncements(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
@@ -217,9 +215,8 @@ public class AnnouncementController {
     /**
      * 设置指定群为公告接收方
      *
-     * @param event
+     * @param event 好友信息事件
      */
-    // TODO: TEST
     public void setGroupAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("设置群")) {
             return;
@@ -241,21 +238,18 @@ public class AnnouncementController {
             return;
         }
 
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> {
-                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(a.getUuid(), groupId));
-                    event.getSender().sendMessage("设置群成功");
-                },
-                () -> {
-                    event.getSender().sendMessage("未选择任何公告");
-                }
+        getSelectedAnnouncement(event).ifPresent(
+            a -> {
+                groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(a.getUuid(), groupId));
+                event.getSender().sendMessage("设置群成功");
+            }
         );
     }
 
     /**
      * 取消指定群为公告接收方
      *
-     * @param event
+     * @param event 好友信息事件
      */
     // TODO: TEST
     public void unsetGroupAnnouncement(FriendMessageEvent event) {
@@ -280,14 +274,11 @@ public class AnnouncementController {
             return;
         }
 
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> {
-                    groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId));
-                    event.getSender().sendMessage("取消群成功");
-                },
-                () -> {
-                    event.getSender().sendMessage("未选择任何公告");
-                }
+        getSelectedAnnouncement(event).ifPresent(
+            a -> {
+                groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId));
+                event.getSender().sendMessage("取消群成功");
+            }
         );
     }
 
@@ -307,14 +298,11 @@ public class AnnouncementController {
         var content = event.getMessage().contentToString().split("\n", 2)[1];
         pb.setContent(content);
 
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> {
-                    AnnouncementService.getInstance().setBody(a.getUuid(), pb);
-                    event.getSender().sendMessage("纯文本公告设置成功");
-                },
-                () -> {
-                    event.getSender().sendMessage("未选择任何公告");
-                }
+        getSelectedAnnouncement(event).ifPresent(
+            a -> {
+                AnnouncementService.getInstance().setBody(a.getUuid(), pb);
+                event.getSender().sendMessage("纯文本公告设置成功");
+            }
         );
     }
 
