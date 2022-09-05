@@ -17,6 +17,8 @@ public class Usage {
     public static final String NEW_TRIGGER = "新建触发器 <cron表达式> - 新建触发器*";
     public static final String DELETE_TRIGGER = "删除触发器 [触发器UUID]... - 删除触发器, 若不指定UUID则删除全部*";
     public static final String PREVIEW = "预览 - 预览公告变量替换后结果*";
+    public static final String SET_VARIABLE = "设置变量\n变量1=值1\n变量2=值2\n... - 设置变量(仅支持模板公告体)*";
+    public static final String UNSET_VARIABLE = "取消变量 <变量1> [变量2]... - 取消设置变量(仅支持模板公告体)*";
     public static final String SHOW_ANNOUNCEMENT = "查看公告 - 查看公告信息*";
     // TemplateController
     public static final String NEW_TEMPLATE = "新建模板 [模板别名]\n<模板体(多行)> - 新建公告模板, 使用'$'定义变量, 如$name$";
@@ -39,6 +41,8 @@ public class Usage {
             + ENABLE_ANNOUNCEMENT + "\n"
             + DISABLE_ANNOUNCEMENT + "\n"
             + PREVIEW + "\n"
+            + SET_VARIABLE + "\n"
+            + UNSET_VARIABLE + "\n"
             + SHOW_ANNOUNCEMENT + "\n"
             + NEW_TRIGGER + "\n"
             + DELETE_TRIGGER + "\n"

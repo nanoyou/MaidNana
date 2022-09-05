@@ -257,10 +257,10 @@ public class AnnouncementController {
         }
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(a.getUuid(), groupId));
-                event.getSender().sendMessage("设置群成功");
-            }
+                a -> {
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(a.getUuid(), groupId));
+                    event.getSender().sendMessage("设置群成功");
+                }
         );
     }
 
@@ -292,14 +292,10 @@ public class AnnouncementController {
         }
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                groupIds.forEach(groupId -> {
-                    AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
-                            ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
-                            () -> event.getSender().sendMessage("未找到群 " + groupId)
-                    );
-                });
-            }
+            a -> groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
+                    ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
+                    () -> event.getSender().sendMessage("未找到群 " + groupId)
+            ))
         );
     }
 
@@ -324,13 +320,17 @@ public class AnnouncementController {
         pb.setContent(content);
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                AnnouncementService.getInstance().setBody(a.getUuid(), pb);
-                event.getSender().sendMessage("纯文本公告设置成功");
-            }
+                a -> {
+                    AnnouncementService.getInstance().setBody(a.getUuid(), pb);
+                    event.getSender().sendMessage("纯文本公告设置成功");
+                }
         );
     }
 
+    /**
+     * 设置指定公告的模板体
+     * @param event 好友消息事件
+     */
     public void setTemplateBody(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("模板公告")) {
             return;
@@ -363,9 +363,11 @@ public class AnnouncementController {
             vars.put(keyAndValue[0], keyAndValue[1]);
         });
         body.setVar(vars);
-        AnnouncementService.getInstance().setBody(optAnn.get().getUuid(), body).ifPresent(ann -> {
-            event.getSender().sendMessage("设置成功! 预览:\n" + ann.getBody().getBodyString());
-        });
+        AnnouncementService.getInstance()
+                .setBody(optAnn.get().getUuid(), body)
+                .ifPresent(ann ->
+                        event.getSender().sendMessage("设置成功! 预览:\n" + ann.getBody().getBodyString())
+                );
 
 
     }
@@ -383,6 +385,59 @@ public class AnnouncementController {
         }
         getSelectedAnnouncement(event).ifPresentOrElse(
                 a -> AnnouncementService.getInstance().enable(a.getUuid()),
+                () -> event.getSender().sendMessage("未选择任何公告")
+        );
+    }
+
+    // TODO: TEST
+
+    /**
+     * 暂停定时公告的发布
+     *
+     * @param event 好友信息事件
+     */
+    public void disableAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("禁用公告")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split(" ");
+
+        if (line.length > 1) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DISABLE_ANNOUNCEMENT);
+            return;
+        }
+
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> AnnouncementService.getInstance().disable(a.getUuid()),
+                () -> event.getSender().sendMessage("未选择任何公告")
+        );
+    }
+
+    // TODO: TEST
+
+    /**
+     * 新建触发器
+     *
+     * @param event 好友信息事件
+     */
+    public void newTrigger(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("新建触发器")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split(" ", 2);
+        if (line.length != 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_TRIGGER);
+            return;
+        }
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    // 新建触发器
+                    var t = new Trigger();
+                    t.setUuid(UUID.randomUUID());
+                    t.setCron(line[1]);
+                    // 加入触发器
+                    AnnouncementService.getInstance().addTrigger(a.getUuid(), t);
+                },
                 () -> event.getSender().sendMessage("未选择任何公告")
         );
     }
