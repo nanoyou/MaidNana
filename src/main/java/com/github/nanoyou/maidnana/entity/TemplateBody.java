@@ -48,6 +48,9 @@ public class TemplateBody implements Body{
             bodyString = bodyString.replaceAll(
                     "\\$"+entry.getKey()+"\\$",entry.getValue());
 
+        // 若还有变量为没被赋值, 则替换为空
+        bodyString = bodyString.replaceAll("\\$.+\\$", "");
+
         return bodyString;
     }
 }
