@@ -376,24 +376,21 @@ public class AnnouncementController {
 
     }
 
+    /**
+     * 开启定时公告的发布
+     *
+     * @param event 好友信息事件
+     */
     public void enableAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("开启公告")) {
             return;
         }
 
-        var line = event.getMessage().contentToString().split(" ");
-
-        if (line.length > 1) {
-            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.ENABLE_ANNOUNCEMENT);
-            return;
-        }
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> AnnouncementService.getInstance().enable(a.getUuid()),
-                () -> event.getSender().sendMessage("未选择任何公告")
-        );
+        getSelectedAnnouncement(event)
+                .flatMap(a -> AnnouncementService.getInstance().enable(a.getUuid()))
+                .ifPresent(r -> event.getSender().sendMessage("开启成功"));
     }
 
-    // TODO: TEST
 
     /**
      * 暂停定时公告的发布
@@ -404,17 +401,10 @@ public class AnnouncementController {
         if (!event.getMessage().contentToString().startsWith("禁用公告")) {
             return;
         }
-        var line = event.getMessage().contentToString().split(" ");
 
-        if (line.length > 1) {
-            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.DISABLE_ANNOUNCEMENT);
-            return;
-        }
-
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> AnnouncementService.getInstance().disable(a.getUuid()),
-                () -> event.getSender().sendMessage("未选择任何公告")
-        );
+        getSelectedAnnouncement(event)
+                .flatMap(a -> AnnouncementService.getInstance().disable(a.getUuid()))
+                .ifPresent(r -> event.getSender().sendMessage("禁用成功"));
     }
 
     // TODO: TEST
