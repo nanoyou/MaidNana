@@ -331,6 +331,10 @@ public class AnnouncementController {
         );
     }
 
+    /**
+     * 设置指定公告的模板体
+     * @param event 好友消息事件
+     */
     public void setTemplateBody(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("模板公告")) {
             return;
