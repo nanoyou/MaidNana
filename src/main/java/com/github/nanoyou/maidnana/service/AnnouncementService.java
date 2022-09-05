@@ -71,6 +71,7 @@ public class AnnouncementService {
      * @return 被删的公告
      */
     public Optional<Announcement> delete(UUID announcementID) {
+
         return dao.delete(announcementID);
     }
 

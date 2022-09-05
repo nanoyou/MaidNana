@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Entity - TemplateBody
@@ -45,9 +44,10 @@ public class TemplateBody implements Body{
         if(template.isEmpty()) return "";
 
         var bodyString = template.get().getTemplate();
-        var.forEach((k,v)->{
-            bodyString.replaceAll("$"+k+"$",v);
-        });
+        for (Map.Entry<String, String> entry : var.entrySet())
+            bodyString = bodyString.replaceAll(
+                    "$"+entry.getKey()+"$",entry.getValue());
+
         return bodyString;
     }
 }
