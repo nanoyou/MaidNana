@@ -100,11 +100,58 @@ public class AnnouncementController {
      * @param event
      */
     public void selectAnnouncements(FriendMessageEvent event) {
+
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
             return;
         }
 
-
+        AnnouncementService.getInstance().getAll(event.getSender().getId()).ifPresentOrElse(
+                l -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("您共有").append(l.size()).append("条公告。\n");
+                    l.forEach(a -> {
+                        sb.append("UUID  ").append(a.getUuid());
+                    });
+                    event.getSender().sendMessage(sb.toString());
+                },
+                () -> {
+                    event.getSender().sendMessage("未找到任何公告");
+                }
+        );
     }
 
+    /**
+     * 设置指定群为公告接收方
+     *
+     * @param event
+     */
+    public void setGroupAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("设置群")) {
+            return;
+        }
+        String[] line = event.getMessage().contentToString().split(" ");
+        if (line.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_GROUP);
+            return;
+        }
+
+        List<Long> groupIds = new ArrayList<>();
+
+        try {
+            for (int i = 1; i < line.length; i++) {
+                groupIds.add(Long.valueOf(line[i]));
+            }
+        } catch (Exception e) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_GROUP);
+            return;
+        }
+
+        selectedAnnouncement.forEach(
+                (k, v) -> {
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(v.getUuid(), groupId));
+                }
+        );
+
+
+    }
 }
