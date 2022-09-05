@@ -112,6 +112,7 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
+    //TODO:TEST
     public void newAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("新建公告")) {
             return;
