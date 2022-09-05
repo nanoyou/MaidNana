@@ -116,7 +116,25 @@ public class AnnouncementController {
         if (!event.getMessage().contentToString().startsWith("新建公告")) {
             return;
         }
-        event.getSender().sendMessage("新建公告!");
+
+        var line = event.getMessage().contentToString().split(" ");
+
+        if (line.length > 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_ANNOUNCEMENT);
+            return;
+        }
+
+        if (line.length == 1) {
+            var a = AnnouncementService.getInstance().create();
+            event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid());
+        }
+
+        if (line.length == 2) {
+            var a = AnnouncementService.getInstance().create();
+            a.setAlias(line[1]);
+            event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid() + "\n别名为“" + a.getAlias() + "”");
+        }
+
     }
 
     /**
