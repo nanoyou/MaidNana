@@ -120,4 +120,30 @@ public class AnnouncementController {
         );
     }
 
+    /**
+     * 设置指定群为公告接收方
+     *
+     * @param event
+     */
+    public void setGroupAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("设置群")) {
+            return;
+        }
+        String[] line = event.getMessage().contentToString().split(" ");
+        if (line.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_GROUP);
+            return;
+        }
+
+        selectedAnnouncement.forEach(
+                (k, v) -> {
+                    for (int i = 1; i < line.length; i++) {
+                        long groupId = Long.valueOf(line[i]);
+                        AnnouncementService.getInstance().addGroup(v.getUuid(), groupId);
+                    }
+                }
+        );
+
+
+    }
 }
