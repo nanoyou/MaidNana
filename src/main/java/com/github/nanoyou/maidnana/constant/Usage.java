@@ -4,7 +4,7 @@ public class Usage {
     // MiscController
     public static final String HELP = "帮助 - 查看帮助列表";
     // AnnouncementController
-    public static final String NEW_ANNOUNCEMENT = "新建公告 [公告别名] - 新建公告, 可指定别名便于记忆";
+    public static final String NEW_ANNOUNCEMENT = "新建公告 [公告别名] - 新建公告并自动选择, 可指定别名便于记忆";
     public static final String SELECT_ANNOUNCEMENT = "选择公告 <公告UUID | 公告别名> - 为后续命令指定公告";
     public static final String DELETE_ANNOUNCEMENT = "删除公告 - 删除公告*";
     public static final String LIST_ANNOUNCEMENTS = "公告列表 - 查看公告列表";
