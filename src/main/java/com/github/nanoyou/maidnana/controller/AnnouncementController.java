@@ -34,6 +34,7 @@ public class AnnouncementController {
 
     /**
      * 格式化公告, 将公告内容格式化为文本
+     *
      * @param announcement 公告
      * @return 格式化后的文本
      */
@@ -50,6 +51,7 @@ public class AnnouncementController {
      * &nbsp;&nbsp;&nbsp;&nbsp;return;<br />
      * }<br />
      * ...
+     *
      * @param event 事件
      * @return 如果获取到返回公告, 已失效/未选择返回空
      */
@@ -200,22 +202,27 @@ public class AnnouncementController {
 
         List<Long> groupIds = new ArrayList<>();
 
+        int i = 1;
         try {
-            for (int i = 1; i < line.length; i++) {
+            for (; i < line.length; i++) {
                 groupIds.add(Long.valueOf(line[i]));
             }
         } catch (Exception e) {
-            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.UNSET_GROUP);
+            event.getSender().sendMessage("命令解析失败：\n“" + line[i] + "”不是一个正确的群号");
             return;
         }
 
-        selectedAnnouncement.forEach(
-                (k, v) -> {
-                    groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(v.getUuid(), groupId));
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId));
+                    event.getSender().sendMessage("取消群成功");
+                },
+                () -> {
+                    event.getSender().sendMessage("未选择任何公告");
                 }
         );
 
-        event.getSender().sendMessage("取消群成功");
+
     }
 
     public void setPlainBody(FriendMessageEvent event) {
@@ -236,4 +243,6 @@ public class AnnouncementController {
                 }
         );
     }
+
+
 }
