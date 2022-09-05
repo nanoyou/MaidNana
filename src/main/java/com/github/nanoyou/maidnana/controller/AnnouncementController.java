@@ -69,6 +69,9 @@ public class AnnouncementController {
             sb.append(')');
         }
         sb.append('\n');
+        sb.append("启用: ");
+        sb.append(announcement.isEnabled() ? "✔" : "✖");
+        sb.append('\n');
         sb.append("群: ");
         sb.append(announcement.getGroups().stream().map(Object::toString).collect(Collectors.joining(", ")));
         sb.append('\n');
