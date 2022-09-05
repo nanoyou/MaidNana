@@ -86,7 +86,9 @@ public class AnnouncementController {
         }
 
         selectedAnnouncement.forEach((k, v) -> {
-            AnnouncementService.getInstance().delete(v.getUuid());
+            if (k.equals(event.getSender().getId())) {
+                AnnouncementService.getInstance().delete(v.getUuid());
+            }
         });
 
         event.getSender().sendMessage("已删除选定公告");
