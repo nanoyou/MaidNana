@@ -66,10 +66,13 @@ public class AnnouncementService {
      */
     public Optional<Announcement> addGroup(UUID announcementID, long groupID) {
         var ansment = dao.get(announcementID);
-        if(ansment.isPresent()){
+        if(ansment.isPresent()) {
             var groups = ansment.get().getGroups();
-            if (groups.stream().noneMatch(e -> e.equals(groupID)))
+            if (groups.stream().noneMatch(e -> e.equals(groupID))) {
                 groups.add(groupID);
+                // 保存
+                dao.modify(ansment.get());
+            }
         }
         return ansment;
     }
