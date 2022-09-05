@@ -51,10 +51,9 @@ public class AnnouncementService {
     /**
      * 按照用户ID返回其注册过的所有公告
      *
-     * @param userID QQ账号
      * @return
      */
-    public Optional<List<Announcement>> getAll(long userID) {
+    public Optional<List<Announcement>> getAll() {
         // TODO 按照用户ID返回其注册过的所有公告
         return Optional.empty();
     }
