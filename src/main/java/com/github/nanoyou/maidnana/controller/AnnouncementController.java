@@ -292,10 +292,10 @@ public class AnnouncementController {
         }
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
-                    ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
-                    () -> event.getSender().sendMessage("未找到群 " + groupId)
-            ))
+                a -> groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
+                        ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
+                        () -> event.getSender().sendMessage("未找到群 " + groupId)
+                ))
         );
     }
 
@@ -329,6 +329,7 @@ public class AnnouncementController {
 
     /**
      * 设置指定公告的模板体
+     *
      * @param event 好友消息事件
      */
     public void setTemplateBody(FriendMessageEvent event) {
@@ -424,7 +425,7 @@ public class AnnouncementController {
         if (!event.getMessage().contentToString().startsWith("新建触发器")) {
             return;
         }
-        var line = event.getMessage().contentToString().split(" ", 2);
+        var line = event.getMessage().contentToString().split(" ");
         if (line.length != 2) {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_TRIGGER);
             return;
@@ -442,4 +443,32 @@ public class AnnouncementController {
         );
     }
 
+    // TODO: TEST
+
+    /**
+     * @param event
+     */
+    public void deleteTrigger(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("删除触发器")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split(" ");
+
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    if (line.length == 1) {
+                        a.getTriggers().forEach(t -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), t.getUuid()));
+                        event.getSender().sendMessage("删除该公告的所有触发器");
+                    } else if (line.length > 1) {
+                        for (int i = 1; i < line.length; i++) {
+                            AnnouncementService.getInstance().removeTrigger(a.getUuid(), UUID.fromString(line[i]));
+                        }
+                        event.getSender().sendMessage("删除该公告中的指定的触发器");
+                    }
+                },
+                () -> event.getSender().sendMessage("未选择任何公告")
+        );
+
+
+    }
 }
