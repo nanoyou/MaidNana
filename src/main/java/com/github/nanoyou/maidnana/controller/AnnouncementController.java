@@ -407,8 +407,6 @@ public class AnnouncementController {
                 .ifPresent(r -> event.getSender().sendMessage("禁用成功"));
     }
 
-    // TODO: TEST
-
     /**
      * 新建触发器
      *
@@ -418,21 +416,22 @@ public class AnnouncementController {
         if (!event.getMessage().contentToString().startsWith("新建触发器")) {
             return;
         }
-        var line = event.getMessage().contentToString().split(" ");
+        var line = event.getMessage().contentToString().split(" ", 2);
         if (line.length != 2) {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_TRIGGER);
             return;
         }
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> {
-                    // 新建触发器
-                    var t = new Trigger();
-                    t.setUuid(UUID.randomUUID());
-                    t.setCron(line[1]);
-                    // 加入触发器
-                    AnnouncementService.getInstance().addTrigger(a.getUuid(), t);
-                },
-                () -> event.getSender().sendMessage("未选择任何公告")
+        getSelectedAnnouncement(event).ifPresent(
+            a -> {
+                // 新建触发器
+                var t = new Trigger();
+                t.setUuid(UUID.randomUUID());
+                t.setCron(line[1]);
+                // 加入触发器
+                AnnouncementService.getInstance().addTrigger(a.getUuid(), t).ifPresent(
+                        ann -> event.getSender().sendMessage("添加触发器成功")
+                );
+            }
         );
     }
 
