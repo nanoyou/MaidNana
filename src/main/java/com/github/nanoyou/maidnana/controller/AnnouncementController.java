@@ -426,16 +426,16 @@ public class AnnouncementController {
             return;
         }
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                // 新建触发器
-                var t = new Trigger();
-                t.setUuid(UUID.randomUUID());
-                t.setCron(line[1]);
-                // 加入触发器
-                AnnouncementService.getInstance().addTrigger(a.getUuid(), t).ifPresent(
-                        ann -> event.getSender().sendMessage("添加触发器成功")
-                );
-            }
+                a -> {
+                    // 新建触发器
+                    var t = new Trigger();
+                    t.setUuid(UUID.randomUUID());
+                    t.setCron(line[1]);
+                    // 加入触发器
+                    AnnouncementService.getInstance().addTrigger(a.getUuid(), t).ifPresent(
+                            ann -> event.getSender().sendMessage("添加触发器成功")
+                    );
+                }
         );
     }
 
@@ -498,6 +498,11 @@ public class AnnouncementController {
         }
         var line = event.getMessage().contentToString().split("\n");
 
+        if (line.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.SET_VARIABLE);
+            return;
+        }
+
         getSelectedAnnouncement(event).ifPresentOrElse(
                 a -> {
                     var body = a.getBody();
@@ -516,5 +521,9 @@ public class AnnouncementController {
                 () -> {
                 }
         );
+    }
+
+    public void unserVariable() {
+
     }
 }
