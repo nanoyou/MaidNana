@@ -90,7 +90,14 @@ public class AnnouncementController {
         } else {
             var body = (TemplateBody) announcement.getBody();
             TemplateService.getInstance().get(body.getTemplateID()).ifPresentOrElse(
-                    template -> sb.append(template.getTemplate()),
+                    template -> {
+                        if (template.getAlias() == null) {
+                            sb.append("模板 ").append(template.getUuid()).append("\n");
+                        } else {
+                            sb.append("模板 ").append(template.getAlias()).append("(").append(template.getUuid()).append(")\n");
+                        }
+                        sb.append(template.getTemplate());
+                    },
                     () -> sb.append("模板被删除")
             );
             sb.append("\n变量列表:\n");
