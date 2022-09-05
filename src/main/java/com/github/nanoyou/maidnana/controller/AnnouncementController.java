@@ -127,22 +127,24 @@ public class AnnouncementController {
     public void selectAnnouncements(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
+            // TODO: 待封装
             return;
         }
 
-        AnnouncementService.getInstance().getAll(event.getSender().getId()).ifPresentOrElse(
-                l -> {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("您共有").append(l.size()).append("条公告。\n");
-                    l.forEach(a -> {
-                        sb.append("UUID  ").append(a.getUuid());
-                    });
-                    event.getSender().sendMessage(sb.toString());
-                },
-                () -> {
-                    event.getSender().sendMessage("未找到任何公告");
-                }
-        );
+        var la = AnnouncementService.getInstance().getAll();
+
+        if (la == null || la.isEmpty()) {
+            event.getSender().sendMessage("未找到任何公告");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("您共有").append(la.size()).append("条公告。\n");
+        la.forEach(a -> {
+            sb.append("UUID  ").append(a.getUuid());
+        });
+        event.getSender().sendMessage(sb.toString());
+        
     }
 
     /**
@@ -177,6 +179,50 @@ public class AnnouncementController {
                 }
         );
 
+        event.getSender().sendMessage("设置群成功");
+    }
+
+    /**
+     * 取消指定群为公告接收方
+     *
+     * @param event
+     */
+    public void unsetGroupAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("取消群")) {
+            return;
+        }
+        String[] line = event.getMessage().contentToString().split(" ");
+        if (line.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.UNSET_GROUP);
+            return;
+        }
+
+        List<Long> groupIds = new ArrayList<>();
+
+        try {
+            for (int i = 1; i < line.length; i++) {
+                groupIds.add(Long.valueOf(line[i]));
+            }
+        } catch (Exception e) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.UNSET_GROUP);
+            return;
+        }
+
+        selectedAnnouncement.forEach(
+                (k, v) -> {
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(v.getUuid(), groupId));
+                }
+        );
+
+        event.getSender().sendMessage("取消群成功");
+    }
+
+    public void setPlainBody(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("纯文本公告")) {
+            return;
+        }
+
+        String content = event.getMessage().contentToString().substring(5);
 
     }
 }
