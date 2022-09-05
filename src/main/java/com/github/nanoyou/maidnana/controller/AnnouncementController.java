@@ -497,6 +497,35 @@ public class AnnouncementController {
             return;
         }
 
+        getSelectedAnnouncement(event).ifPresent(
+                a -> {
+                    var body = a.getBody();
+                    if (!(body instanceof TemplateBody)) {
+                        event.getSender().sendMessage("当前选中的公告不能作为模板");
+                        return;
+                    }
+                    var tb = ((TemplateBody) body);
+                    Arrays.stream(line).skip(1).forEach(kv -> {
+                        var skv = kv.split("=");
+                        tb.getVar().put(skv[0], skv[1]);
+                    });
+                    a.setBody(tb);
+                    event.getSender().sendMessage("变量设置成功");
+                }
+        );
+    }
+
+    public void unsetVariable(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("取消变量")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split(" ");
+
+        if (line.length < 2) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.UNSET_VARIABLE);
+            return;
+        }
+
         getSelectedAnnouncement(event).ifPresentOrElse(
                 a -> {
                     var body = a.getBody();
@@ -517,10 +546,5 @@ public class AnnouncementController {
         );
     }
 
-    public void unsetVariable(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("设置变量")) {
-            return;
-        }
-        var line = event.getMessage().contentToString().split("\n");
-    }
+
 }
