@@ -176,13 +176,15 @@ public class AnnouncementController {
             return;
         }
 
-        selectedAnnouncement.forEach(
-                (k, v) -> {
-                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(v.getUuid(), groupId));
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> {
+                    groupIds.forEach(groupId -> AnnouncementService.getInstance().addGroup(a.getUuid(), groupId));
+                    event.getSender().sendMessage("设置群成功");
+                },
+                () -> {
+                    event.getSender().sendMessage("未选择任何公告");
                 }
         );
-
-        event.getSender().sendMessage("设置群成功");
     }
 
     /**
@@ -221,8 +223,6 @@ public class AnnouncementController {
                     event.getSender().sendMessage("未选择任何公告");
                 }
         );
-
-
     }
 
     public void setPlainBody(FriendMessageEvent event) {
