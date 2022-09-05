@@ -4,8 +4,6 @@ import lombok.Data;
 
 /**
  * Entity - PlainBody
- *
- * @author Huang Samuel
  */
 @Data
 public class PlainBody implements Body{

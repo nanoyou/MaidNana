@@ -7,8 +7,6 @@ import java.util.UUID;
 
 /**
  * Entity - Template
- *
- * @author Huang Samuel
  */
 @Data
 public class Template implements Aliasable{

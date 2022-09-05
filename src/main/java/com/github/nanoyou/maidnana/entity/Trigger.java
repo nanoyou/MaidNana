@@ -7,8 +7,6 @@ import java.util.UUID;
 
 /**
  * Entity - Trigger
- *
- * @author Huang Samuel
  */
 @Data
 public class Trigger implements Identifiable {
