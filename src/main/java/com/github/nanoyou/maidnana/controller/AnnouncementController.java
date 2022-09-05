@@ -251,7 +251,6 @@ public class AnnouncementController {
      *
      * @param event 好友信息事件
      */
-    // TODO: TEST
     public void unsetGroupAnnouncement(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("取消群")) {
             return;
@@ -276,8 +275,12 @@ public class AnnouncementController {
 
         getSelectedAnnouncement(event).ifPresent(
             a -> {
-                groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId));
-                event.getSender().sendMessage("取消群成功");
+                groupIds.forEach(groupId -> {
+                    AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
+                            ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
+                            () -> event.getSender().sendMessage("未找到群 " + groupId)
+                    );
+                });
             }
         );
     }

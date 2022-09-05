@@ -113,7 +113,7 @@ public class AnnouncementService {
      * 删除分组
      * @param announcementID 公告ID
      * @param groupID 分组ID
-     * @return 被删除分组的公告
+     * @return 被删除分组的公告, 未找到返回空
      */
     public Optional<Announcement> removeGroup(UUID announcementID, long groupID) {
         var ansment = get(announcementID);
@@ -121,6 +121,9 @@ public class AnnouncementService {
             var groups = ansment.get().getGroups();
             if (groups.stream().anyMatch(e -> e.equals(groupID)))
                 groups.removeIf(e -> e.equals(groupID));
+            else {
+                return Optional.empty();
+            }
 
             ansment.get().setGroups(groups);
             dao.modify(ansment.get());
