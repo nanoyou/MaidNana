@@ -441,6 +441,7 @@ public class AnnouncementController {
 
     /**
      * 删除触发器
+     *
      * @param event 好友消息事件
      */
     public void deleteTrigger(FriendMessageEvent event) {
@@ -450,17 +451,17 @@ public class AnnouncementController {
         var line = event.getMessage().contentToString().split(" ");
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                if (line.length == 1) {
-                    // forEach里不能修改原数组, 需要先进行克隆
-                    new ArrayList<>(a.getTriggers()).forEach(t -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), t.getUuid()));
-                    event.getSender().sendMessage("已删除该公告的所有触发器");
-                } else {
-                    Arrays.stream(line).skip(1)
-                            .forEach(trigger -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), UUID.fromString(trigger)));
-                    event.getSender().sendMessage("已删除该公告中的指定的触发器");
+                a -> {
+                    if (line.length == 1) {
+                        // forEach里不能修改原数组, 需要先进行克隆
+                        new ArrayList<>(a.getTriggers()).forEach(t -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), t.getUuid()));
+                        event.getSender().sendMessage("已删除该公告的所有触发器");
+                    } else {
+                        Arrays.stream(line).skip(1)
+                                .forEach(trigger -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), UUID.fromString(trigger)));
+                        event.getSender().sendMessage("已删除该公告中的指定的触发器");
+                    }
                 }
-            }
         );
 
 
@@ -523,7 +524,7 @@ public class AnnouncementController {
         );
     }
 
-    public void unserVariable() {
+    public void unsetVariable() {
 
     }
 }
