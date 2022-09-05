@@ -7,6 +7,7 @@ import com.github.nanoyou.maidnana.service.AnnouncementService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AnnouncementController {
     private static final AnnouncementController instance = new AnnouncementController();
@@ -39,7 +40,26 @@ public class AnnouncementController {
      * @return 格式化后的文本
      */
     private String formatAnnouncement(Announcement announcement) {
-        return "";
+        var sb = new StringBuilder();
+        if (announcement.getAlias() == null) {
+            sb.append(announcement.getUuid());
+        } else {
+            sb.append(announcement.getAlias());
+            sb.append('(');
+            sb.append(announcement.getUuid());
+            sb.append(')');
+        }
+        sb.append('\n');
+        sb.append("群: ");
+        sb.append(announcement.getGroups().stream().map(Object::toString).collect(Collectors.joining(", ")));
+        sb.append('\n');
+        sb.append("触发器列表:\n");
+        sb.append(announcement.getTriggers().stream().map(Objects::toString).collect(Collectors.joining("\n")));
+        sb.append('\n');
+        sb.append("公告体:\n");
+        sb.append(announcement.getBody());
+
+        return sb.toString();
     }
 
     /**
@@ -56,7 +76,16 @@ public class AnnouncementController {
      * @return 如果获取到返回公告, 已失效/未选择返回空
      */
     private Optional<Announcement> getSelectedAnnouncement(FriendMessageEvent event) {
-        return Optional.empty();
+        var ann = selectedAnnouncement.get(event.getSender().getId());
+        if (ann == null) {
+            event.getSender().sendMessage("请先选择公告");
+            return Optional.empty();
+        }
+        var optAnn = AnnouncementService.getInstance().get(ann.getUuid());
+        if (optAnn.isEmpty()) {
+            event.getSender().sendMessage("公告已被删除");
+        }
+        return optAnn;
     }
 
     /**
