@@ -36,8 +36,10 @@ public class AnnouncementController {
             return AnnouncementService.getInstance().get(uuidOrAlias);
         }
     }
+
     /**
      * 通过 UUID 或别名自动获取模板
+     *
      * @param uuidOrAlias UUID 或别名
      * @return 模板
      */
