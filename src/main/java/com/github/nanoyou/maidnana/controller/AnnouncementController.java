@@ -524,7 +524,10 @@ public class AnnouncementController {
         );
     }
 
-    public void unsetVariable() {
-
+    public void unsetVariable(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("设置变量")) {
+            return;
+        }
+        var line = event.getMessage().contentToString().split("\n");
     }
 }
