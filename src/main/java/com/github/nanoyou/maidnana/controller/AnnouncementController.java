@@ -235,7 +235,5 @@ public class AnnouncementController {
                     event.getSender().sendMessage("未选择任何公告");
                 }
         );
-
-
     }
 }
