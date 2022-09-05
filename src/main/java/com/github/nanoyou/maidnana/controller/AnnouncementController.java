@@ -469,6 +469,7 @@ public class AnnouncementController {
 
     /**
      * 预览
+     *
      * @param event 好友消息事件
      */
     public void preview(FriendMessageEvent event) {
@@ -476,7 +477,7 @@ public class AnnouncementController {
             return;
         }
         getSelectedAnnouncement(event).ifPresent(
-            a -> event.getSender().sendMessage(a.getBody().getBodyString())
+                a -> event.getSender().sendMessage(a.getBody().getBodyString())
         );
     }
 
@@ -506,7 +507,7 @@ public class AnnouncementController {
                     }
                     var tb = ((TemplateBody) body);
                     Arrays.stream(line).skip(1).forEach(kv -> {
-                        var skv = kv.split("=");
+                        var skv = kv.split("\\s*=\\s*");
                         tb.getVar().put(skv[0], skv[1]);
                     });
                     a.setBody(tb);
