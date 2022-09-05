@@ -346,4 +346,21 @@ public class AnnouncementController {
 //        );
     }
 
+    public void enableAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("开启公告")) {
+            return;
+        }
+
+        var line = event.getMessage().contentToString().split(" ");
+
+        if (line.length > 1) {
+            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.ENABLE_ANNOUNCEMENT);
+            return;
+        }
+        getSelectedAnnouncement(event).ifPresentOrElse(
+                a -> AnnouncementService.getInstance().enable(a.getUuid()),
+                () -> event.getSender().sendMessage("未选择任何公告")
+        );
+    }
+
 }
