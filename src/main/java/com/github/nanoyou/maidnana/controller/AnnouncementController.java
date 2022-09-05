@@ -249,5 +249,8 @@ public class AnnouncementController {
         );
     }
 
+    public void setTemplateBody(FriendMessageEvent event) {
+        
+    }
 
 }
