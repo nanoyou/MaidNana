@@ -159,26 +159,16 @@ public class AnnouncementController {
      * @param event
      */
     // TODO: TEST
-    public void selectAnnouncements(FriendMessageEvent event) {
+    public void listAnnouncements(FriendMessageEvent event) {
 
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
-            // TODO: 待封装
             return;
         }
 
         var la = AnnouncementService.getInstance().getAll();
 
-        if (la == null || la.isEmpty()) {
-            event.getSender().sendMessage("未找到任何公告");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("您共有").append(la.size()).append("条公告。\n");
-        la.forEach(a -> {
-            sb.append("UUID  ").append(a.getUuid());
-        });
-        event.getSender().sendMessage(sb.toString());
+        event.getSender().sendMessage("共有 " + la.size() + " 条公告");
+        la.forEach(ann -> event.getSender().sendMessage(formatAnnouncement(ann)));
 
     }
 
