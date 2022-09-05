@@ -32,6 +32,21 @@ public class AnnouncementService {
         dao.add(ansment);
         return ansment;
     }
+    /**
+     * 创建公告
+     * @param alias 公告别名
+     * @return 创建的公告, 若别名已存在返回空
+     */
+    public Optional<Announcement> create(String alias) {
+        if (dao.get(alias).isPresent()) {
+            return Optional.empty();
+        }
+        var ann = new Announcement();
+        ann.setUuid(UUID.randomUUID());
+        ann.setAlias(alias);
+        dao.add(ann);
+        return Optional.of(ann);
+    }
 
     /**
      * 获取公告
