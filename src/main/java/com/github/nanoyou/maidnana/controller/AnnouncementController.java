@@ -100,11 +100,24 @@ public class AnnouncementController {
      * @param event
      */
     public void selectAnnouncements(FriendMessageEvent event) {
+
         if (!event.getMessage().contentToString().startsWith("公告列表")) {
             return;
         }
 
-
+        AnnouncementService.getInstance().getAll(event.getSender().getId()).ifPresentOrElse(
+                l -> {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("您共有").append(l.size()).append("条公告。\n");
+                    l.forEach(a -> {
+                        sb.append("UUID  ").append(a.getUuid());
+                    });
+                    event.getSender().sendMessage(sb.toString());
+                },
+                () -> {
+                    event.getSender().sendMessage("未找到任何公告");
+                }
+        );
     }
 
 }
