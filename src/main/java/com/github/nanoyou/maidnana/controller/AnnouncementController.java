@@ -73,10 +73,14 @@ public class AnnouncementController {
         sb.append(announcement.isEnabled() ? "✔" : "✖");
         sb.append('\n');
         sb.append("群: ");
-        sb.append(announcement.getGroups().stream().map(Object::toString).collect(Collectors.joining(", ")));
+        sb.append(announcement.getGroups().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", ")));
         sb.append('\n');
         sb.append("触发器列表:\n");
-        sb.append(announcement.getTriggers().stream().map(Trigger::getCron).collect(Collectors.joining("\n")));
+        sb.append(announcement.getTriggers().stream()
+                .map(trigger -> trigger.getCron() + "(" + trigger.getUuid() + ")")
+                .collect(Collectors.joining("\n")));
         sb.append('\n');
         sb.append("公告体:\n");
         if (announcement.getBody() == null) {
@@ -435,10 +439,9 @@ public class AnnouncementController {
         );
     }
 
-    // TODO: TEST
-
     /**
-     * @param event
+     * 删除触发器
+     * @param event 好友消息事件
      */
     public void deleteTrigger(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("删除触发器")) {
@@ -446,19 +449,18 @@ public class AnnouncementController {
         }
         var line = event.getMessage().contentToString().split(" ");
 
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> {
-                    if (line.length == 1) {
-                        a.getTriggers().forEach(t -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), t.getUuid()));
-                        event.getSender().sendMessage("删除该公告的所有触发器");
-                    } else if (line.length > 1) {
-                        for (int i = 1; i < line.length; i++) {
-                            AnnouncementService.getInstance().removeTrigger(a.getUuid(), UUID.fromString(line[i]));
-                        }
-                        event.getSender().sendMessage("删除该公告中的指定的触发器");
-                    }
-                },
-                () -> event.getSender().sendMessage("未选择任何公告")
+        getSelectedAnnouncement(event).ifPresent(
+            a -> {
+                if (line.length == 1) {
+                    // forEach里不能修改原数组, 需要先进行克隆
+                    new ArrayList<>(a.getTriggers()).forEach(t -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), t.getUuid()));
+                    event.getSender().sendMessage("已删除该公告的所有触发器");
+                } else {
+                    Arrays.stream(line).skip(1)
+                            .forEach(trigger -> AnnouncementService.getInstance().removeTrigger(a.getUuid(), UUID.fromString(trigger)));
+                    event.getSender().sendMessage("已删除该公告中的指定的触发器");
+                }
+            }
         );
 
 
