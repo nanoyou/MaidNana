@@ -29,7 +29,11 @@ public class GsonUtil {
             .registerTypeHierarchyAdapter(Body.class, new TypeAdapter<Body>() {
 
                 @Override
-                public void write(JsonWriter out, Body value) {
+                public void write(JsonWriter out, Body value) throws IOException {
+                    if (value == null) {
+                        out.nullValue();
+                        return;
+                    }
                     var r = new HashMap<String, Object>();
                     if (value instanceof PlainBody) {
                         var body = (PlainBody) value;
@@ -49,6 +53,9 @@ public class GsonUtil {
                 public Body read(JsonReader in) {
                     Map<String, Object> r = gson.fromJson(in, Map.class);
                     var type = (String) r.get("type");
+                    if (type == null) {
+                        return null;
+                    }
                     Body body;
                     if ("plain".equals(type)) {
                         PlainBody plainBody = new PlainBody();
