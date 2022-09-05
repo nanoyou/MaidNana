@@ -466,23 +466,16 @@ public class AnnouncementController {
 
     }
 
-    // TODO: Test
-
     /**
-     * @param event
+     * 预览
+     * @param event 好友消息事件
      */
     public void preview(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("预览")) {
             return;
         }
-        var line = event.getMessage().contentToString().split(" ");
-        if (line.length != 1) {
-            event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.PREVIEW);
-            return;
-        }
-        getSelectedAnnouncement(event).ifPresentOrElse(
-                a -> event.getSender().sendMessage(a.getBody().getBodyString()),
-                () -> event.getSender().sendMessage("未选择任何公告")
+        getSelectedAnnouncement(event).ifPresent(
+            a -> event.getSender().sendMessage(a.getBody().getBodyString())
         );
     }
 

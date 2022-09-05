@@ -46,7 +46,7 @@ public class TemplateBody implements Body{
         var bodyString = template.get().getTemplate();
         for (Map.Entry<String, String> entry : var.entrySet())
             bodyString = bodyString.replaceAll(
-                    "$"+entry.getKey()+"$",entry.getValue());
+                    "\\$"+entry.getKey()+"\\$",entry.getValue());
 
         return bodyString;
     }
