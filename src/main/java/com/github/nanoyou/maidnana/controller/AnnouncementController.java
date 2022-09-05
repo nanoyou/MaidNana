@@ -76,7 +76,7 @@ public class AnnouncementController {
         sb.append(announcement.getGroups().stream().map(Object::toString).collect(Collectors.joining(", ")));
         sb.append('\n');
         sb.append("触发器列表:\n");
-        sb.append(announcement.getTriggers().stream().map(Objects::toString).collect(Collectors.joining("\n")));
+        sb.append(announcement.getTriggers().stream().map(Trigger::getCron).collect(Collectors.joining("\n")));
         sb.append('\n');
         sb.append("公告体:\n");
         if (announcement.getBody() == null) {
