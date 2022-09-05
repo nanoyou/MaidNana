@@ -92,4 +92,17 @@ public class AnnouncementController {
         event.getSender().sendMessage("已删除选定公告");
     }
 
+    /**
+     * 查看公告列表
+     *
+     * @param event
+     */
+    public void selectAnnouncements(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("公告列表")) {
+            return;
+        }
+
+
+    }
+
 }

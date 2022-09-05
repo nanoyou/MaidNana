@@ -19,7 +19,6 @@ import java.nio.file.Files;
 
 /**
  * MaidNana 插件主类
- *
  */
 
 public final class MaidNana extends JavaPlugin {
@@ -36,6 +35,7 @@ public final class MaidNana extends JavaPlugin {
             throw new RuntimeException(e);
         }
     });
+
     // 测试是否用户有权限
     public boolean hasAnnouncementPermission(User user) {
         PermitteeId pid;
@@ -46,6 +46,7 @@ public final class MaidNana extends JavaPlugin {
         }
         return PermissionService.hasPermission(pid, announcementPermission.getValue());
     }
+
     private MaidNana() {
         super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.1.0")
                 .info("EG")
@@ -80,6 +81,8 @@ public final class MaidNana extends JavaPlugin {
 
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::newAnnouncement);
         channel.subscribeAlways(FriendMessageEvent.class, announcementController::selectAnnouncement);
+        channel.subscribeAlways(FriendMessageEvent.class, announcementController::deleteAnnouncement);
+        channel.subscribeAlways(FriendMessageEvent.class, announcementController::selectAnnouncements);
 
         channel.subscribeAlways(FriendMessageEvent.class, templateController::newTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::deleteTemplate);
@@ -87,6 +90,7 @@ public final class MaidNana extends JavaPlugin {
         channel.subscribeAlways(FriendMessageEvent.class, templateController::showTemplate);
         channel.subscribeAlways(FriendMessageEvent.class, templateController::listTemplates);
     }
+
     // 初始化文件
     private void initFiles() {
         if (Files.notExists(getDataFolderPath())) {
