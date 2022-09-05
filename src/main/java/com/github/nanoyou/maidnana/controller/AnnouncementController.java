@@ -4,7 +4,9 @@ import com.github.nanoyou.maidnana.constant.Usage;
 import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.entity.Body;
 import com.github.nanoyou.maidnana.entity.PlainBody;
+import com.github.nanoyou.maidnana.entity.Template;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
+import com.github.nanoyou.maidnana.service.TemplateService;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
 import java.util.*;
@@ -31,6 +33,19 @@ public class AnnouncementController {
             return AnnouncementService.getInstance().get(uuid);
         } catch (IllegalArgumentException e) {
             return AnnouncementService.getInstance().get(uuidOrAlias);
+        }
+    }
+    /**
+     * 通过 UUID 或别名自动获取模板
+     * @param uuidOrAlias UUID 或别名
+     * @return 模板
+     */
+    private Optional<Template> getTemplate(String uuidOrAlias) {
+        try {
+            var uuid = UUID.fromString(uuidOrAlias);
+            return TemplateService.getInstance().get(uuid);
+        } catch (IllegalArgumentException e) {
+            return TemplateService.getInstance().get(uuidOrAlias);
         }
     }
 
