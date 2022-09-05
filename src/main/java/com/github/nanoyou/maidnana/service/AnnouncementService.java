@@ -65,25 +65,69 @@ public class AnnouncementService {
      * @param groupID 分组ID
      */
     public Optional<Announcement> addGroup(UUID announcementID, long groupID) {
-        var ansment = dao.get(announcementID);
+        var ansment = get(announcementID);
         if(ansment.isPresent()){
             var groups = ansment.get().getGroups();
             if (groups.stream().noneMatch(e -> e.equals(groupID)))
                 groups.add(groupID);
+
+            ansment.get().setGroups(groups);
+            dao.modify(ansment.get());
         }
         return ansment;
     }
     /**
      * 增加分组
-     * @param announcementID 公告ID
+     * @param alias 公告ID
      * @param groupID 分组ID
      */
-    public Optional<Announcement> removeGroup(UUID announcementID, long groupID) {
-        var ansment = dao.get(announcementID);
+    public Optional<Announcement> addGroup(String alias, long groupID) {
+        var ansment = get(alias);
         if(ansment.isPresent()){
             var groups = ansment.get().getGroups();
             if (groups.stream().noneMatch(e -> e.equals(groupID)))
                 groups.add(groupID);
+
+            ansment.get().setGroups(groups);
+            dao.modify(ansment.get());
+        }
+        return ansment;
+    }
+
+    /**
+     * 删除分组
+     * @param announcementID 公告ID
+     * @param groupID 分组ID
+     * @return 被删除分组的公告
+     */
+    public Optional<Announcement> removeGroup(UUID announcementID, long groupID) {
+        var ansment = get(announcementID);
+        if(ansment.isPresent()){
+            var groups = ansment.get().getGroups();
+            if (groups.stream().anyMatch(e -> e.equals(groupID)))
+                groups.removeIf(e -> e.equals(groupID));
+
+            ansment.get().setGroups(groups);
+            dao.modify(ansment.get());
+        }
+        return ansment;
+    }
+    /**
+     * 删除分组
+     *
+     * @param alias   别名
+     * @param groupID 组id
+     * @return {@link Optional}<{@link Announcement}>
+     */
+    public Optional<Announcement> removeGroup(String alias, long groupID) {
+        var ansment = get(alias);
+        if(ansment.isPresent()){
+            var groups = ansment.get().getGroups();
+            if (groups.stream().anyMatch(e -> e.equals(groupID)))
+                groups.removeIf(e -> e.equals(groupID));
+
+            ansment.get().setGroups(groups);
+            dao.modify(ansment.get());
         }
         return ansment;
     }
@@ -95,11 +139,33 @@ public class AnnouncementService {
      * @param trigger        触发器
      */
     public Optional<Announcement> addTrigger(UUID announcementID, Trigger trigger) {
-        var ansment = dao.get(announcementID);
+        var ansment = get(announcementID);
         if(ansment.isPresent()){
             var triggers = ansment.get().getTriggers();
             if (triggers.stream().noneMatch(e -> e.equals(trigger)))
                 triggers.add(trigger);
+
+            ansment.get().setTriggers(triggers);
+            dao.modify(ansment.get());
+        }
+
+        return ansment;
+    }
+    /**
+     * 添加触发器
+     *
+     * @param alias 别名
+     * @param trigger        触发器
+     */
+    public Optional<Announcement> addTrigger(String alias, Trigger trigger) {
+        var ansment = get(alias);
+        if(ansment.isPresent()){
+            var triggers = ansment.get().getTriggers();
+            if (triggers.stream().noneMatch(e -> e.equals(trigger)))
+                triggers.add(trigger);
+
+            ansment.get().setTriggers(triggers);
+            dao.modify(ansment.get());
         }
 
         return ansment;
@@ -112,11 +178,14 @@ public class AnnouncementService {
      * @param triggerID      触发器ID
      */
     public Optional<Announcement> removeTrigger(UUID announcementID, UUID triggerID) {
-        var ansment = dao.get(announcementID);
+        var ansment = get(announcementID);
         if(ansment.isPresent()){
             var triggers = ansment.get().getTriggers();
             if (triggers.stream().anyMatch(e -> e.getUuid().equals(triggerID)))
                 triggers.removeIf(e->e.getUuid().equals(triggerID));
+
+            ansment.get().setTriggers(triggers);
+            dao.modify(ansment.get());
         }
         return ansment;
     }
@@ -126,11 +195,14 @@ public class AnnouncementService {
      * @param triggerID 触发器ID
      */
     public Optional<Announcement> removeTrigger(String alias, UUID triggerID) {
-        var ansment = dao.get(alias);
+        var ansment = get(alias);
         if(ansment.isPresent()){
             var triggers = ansment.get().getTriggers();
             if (triggers.stream().anyMatch(e -> e.getUuid().equals(triggerID)))
                 triggers.removeIf(e->e.getUuid().equals(triggerID));
+
+            ansment.get().setTriggers(triggers);
+            dao.modify(ansment.get());
         }
         return ansment;
     }
@@ -141,8 +213,11 @@ public class AnnouncementService {
      * @param body 身体
      */
     public Optional<Announcement> setBody(UUID announcementID, Body body) {
-        var ansment = dao.get(announcementID);
-        ansment.ifPresent(a ->a.setBody(body));
+        var ansment = get(announcementID);
+        ansment.ifPresent(a ->{
+            a.setBody(body);
+            dao.modify(a);
+        });
         return ansment;
     }
     /**
@@ -151,8 +226,11 @@ public class AnnouncementService {
      * @param body 身体
      */
     public Optional<Announcement> setBody(String alias, Body body){
-        var ansment = dao.get(alias);
-        ansment.ifPresent(a ->a.setBody(body));
+        var ansment = get(alias);
+        ansment.ifPresent(a ->{
+            a.setBody(body);
+            dao.modify(a);
+        });
         return ansment;
     }
 
@@ -161,8 +239,11 @@ public class AnnouncementService {
      * @param announcementID 公告ID
      */
     public Optional<Announcement> enable(UUID announcementID) {
-        var ansment = dao.get(announcementID);
-        ansment.ifPresent(a -> a.setEnabled(true));
+        var ansment = get(announcementID);
+        ansment.ifPresent(a ->{
+            a.setEnabled(true);
+            dao.modify(a);
+        });
         return ansment;
     }
     /**
@@ -170,8 +251,11 @@ public class AnnouncementService {
      * @param alias 别名捏
      */
     public Optional<Announcement> enable(String alias) {
-        var ansment = dao.get(alias);
-        ansment.ifPresent(a -> a.setEnabled(true));
+        var ansment = get(alias);
+        ansment.ifPresent(a ->{
+            a.setEnabled(true);
+            dao.modify(a);
+        });
         return ansment;
     }
 
@@ -180,8 +264,11 @@ public class AnnouncementService {
      * @param announcementID 公告ID
      */
     public Optional<Announcement> disable(UUID announcementID) {
-        var ansment = dao.get(announcementID);
-        ansment.ifPresent(a -> a.setEnabled(false));
+        var ansment = get(announcementID);
+        ansment.ifPresent(a ->{
+            a.setEnabled(false);
+            dao.modify(a);
+        });
         return ansment;
     }
     /**
@@ -189,8 +276,11 @@ public class AnnouncementService {
      * @param alias 别名
      */
     public Optional<Announcement> disable(String alias) {
-        var ansment = dao.get(alias);
-        ansment.ifPresent(a -> a.setEnabled(false));
+        var ansment = get(alias);
+        ansment.ifPresent(a ->{
+            a.setEnabled(false);
+            dao.modify(a);
+        });
         return ansment;
     }
 

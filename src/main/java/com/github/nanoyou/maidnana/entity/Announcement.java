@@ -9,7 +9,6 @@ import java.util.UUID;
 /**
  * 公告
  * Entity - Announcement
- * @date 2022/09/05
  */
 @Data
 public class Announcement implements Aliasable {
