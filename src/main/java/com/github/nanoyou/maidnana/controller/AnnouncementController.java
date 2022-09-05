@@ -511,7 +511,7 @@ public class AnnouncementController {
                     }
                     var tb = ((TemplateBody) body);
                     Arrays.stream(line).skip(1).forEach(kv -> {
-                        var skv = kv.split("\\s*=\\s*");
+                        var skv = kv.split("\\s*=\\s*", 2);
                         tb.getVar().put(skv[0], skv[1]);
                     });
                     a.setBody(tb);
@@ -519,6 +519,8 @@ public class AnnouncementController {
                 }
         );
     }
+
+    //TODO:TEST
 
     public void unsetVariable(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("取消变量")) {
@@ -531,7 +533,7 @@ public class AnnouncementController {
             return;
         }
 
-        getSelectedAnnouncement(event).ifPresentOrElse(
+        getSelectedAnnouncement(event).ifPresent(
                 a -> {
                     var body = a.getBody();
                     if (!(body instanceof TemplateBody)) {
@@ -539,16 +541,10 @@ public class AnnouncementController {
                         return;
                     }
                     var tb = ((TemplateBody) body);
-                    Arrays.stream(line).skip(1).forEach(kv -> {
-                        var skv = kv.split("=");
-                        tb.getVar().put(skv[0], skv[1]);
+                    Arrays.stream(line).skip(1).forEach(k -> {
+                        tb.getVar().remove(k);
                     });
-                    a.setBody(tb);
-                    event.getSender().sendMessage("变量设置成功");
-                },
-                () -> {
-                }
-        );
+                });
     }
 
 
