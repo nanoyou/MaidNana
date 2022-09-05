@@ -292,14 +292,10 @@ public class AnnouncementController {
         }
 
         getSelectedAnnouncement(event).ifPresent(
-            a -> {
-                groupIds.forEach(groupId -> {
-                    AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
-                            ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
-                            () -> event.getSender().sendMessage("未找到群 " + groupId)
-                    );
-                });
-            }
+            a -> groupIds.forEach(groupId -> AnnouncementService.getInstance().removeGroup(a.getUuid(), groupId).ifPresentOrElse(
+                    ann -> event.getSender().sendMessage("取消群 " + groupId + " 成功"),
+                    () -> event.getSender().sendMessage("未找到群 " + groupId)
+            ))
         );
     }
 
@@ -367,9 +363,11 @@ public class AnnouncementController {
             vars.put(keyAndValue[0], keyAndValue[1]);
         });
         body.setVar(vars);
-        AnnouncementService.getInstance().setBody(optAnn.get().getUuid(), body).ifPresent(ann -> {
-            event.getSender().sendMessage("设置成功! 预览:\n" + ann.getBody().getBodyString());
-        });
+        AnnouncementService.getInstance()
+                .setBody(optAnn.get().getUuid(), body)
+                .ifPresent(ann ->
+                        event.getSender().sendMessage("设置成功! 预览:\n" + ann.getBody().getBodyString())
+                );
 
 
     }
