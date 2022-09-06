@@ -3,6 +3,9 @@ package com.github.nanoyou.maidnana.dao;
 import com.github.nanoyou.maidnana.MaidNana;
 import com.github.nanoyou.maidnana.entity.Identifiable;
 import com.github.nanoyou.maidnana.util.GsonUtil;
+import com.github.nanoyou.maidnana.util.observer.ConcreteSubject;
+import com.github.nanoyou.maidnana.util.observer.Observer;
+import com.github.nanoyou.maidnana.util.observer.Subject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -11,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public abstract class BaseDao<T extends Identifiable> {
+public abstract class BaseDao<T extends Identifiable> implements Subject {
     public abstract Path getPath();
     public abstract Type getType();
     private final Map<UUID, T> data = new HashMap<>();
@@ -33,6 +36,7 @@ public abstract class BaseDao<T extends Identifiable> {
     public void add(T value) {
         data.put(value.getUuid(), value);
         save();
+        notifyObservers();
     }
 
     /**
@@ -58,6 +62,7 @@ public abstract class BaseDao<T extends Identifiable> {
     public T modify(T value) {
         var r = data.put(value.getUuid(), value);
         save();
+        notifyObservers();
         return r;
     }
 
@@ -73,6 +78,7 @@ public abstract class BaseDao<T extends Identifiable> {
             return Optional.empty();
         }
         save();
+        notifyObservers();
         return Optional.of(r);
     }
 
@@ -105,5 +111,22 @@ public abstract class BaseDao<T extends Identifiable> {
             MaidNana.INSTANCE.getLogger().error("无法写入 " + getPath().toString(), e);
             throw new RuntimeException(e);
         }
+    }
+
+    private final Subject subject = new ConcreteSubject();
+
+    @Override
+    public void registerObserver(Observer observer) {
+        subject.registerObserver(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        subject.removeObserver(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        subject.notifyObservers();
     }
 }
