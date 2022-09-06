@@ -29,4 +29,5 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
     implementation("com.google.code.gson:gson:2.9.1")
+    implementation("it.sauronsoftware.cron4j:cron4j:2.2.5")
 }
