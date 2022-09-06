@@ -40,6 +40,12 @@ Body --* Announcement
 ## Dao
 ```mermaid
 classDiagram
+class Subject {
+    <<interface>>
+    +registerObserver(Observer o)
+    +removeObserver(Observer o)
+    +notifyObservers()
+}
 class BaseDao~T extends Identifiable~ {
     +add(T value)*
     +get(UUID id)* Optional~T~
@@ -48,7 +54,9 @@ class BaseDao~T extends Identifiable~ {
     +getAll()* List~T~
     -load()
     -save()
+    -Subject subject
 }
+BaseDao --|> Subject
 class AliasDao~T extends Aliasable~ {
     +get(String alias)*
     +delete(String alias)*
