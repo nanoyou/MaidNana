@@ -561,5 +561,16 @@ public class AnnouncementController {
                 });
     }
 
+    /**
+     * 显示公告内容
+     * @param event 好友消息事件
+     */
+    public void showAnnouncement(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("查看公告")) {
+            return;
+        }
+        getSelectedAnnouncement(event).ifPresent(a -> event.getUser().sendMessage(formatAnnouncement(a)));
+    }
+
 
 }
