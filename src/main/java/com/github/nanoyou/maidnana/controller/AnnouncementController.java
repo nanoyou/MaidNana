@@ -8,6 +8,8 @@ import com.github.nanoyou.maidnana.entity.Template;
 import com.github.nanoyou.maidnana.entity.*;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
 import com.github.nanoyou.maidnana.service.TemplateService;
+import it.sauronsoftware.cron4j.InvalidPatternException;
+import it.sauronsoftware.cron4j.SchedulingPattern;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 
 import java.util.*;
@@ -434,6 +436,12 @@ public class AnnouncementController {
         var line = event.getMessage().contentToString().split(" ", 2);
         if (line.length != 2) {
             event.getSender().sendMessage("命令格式错误, 用法:\n" + Usage.NEW_TRIGGER);
+            return;
+        }
+        try {
+            new SchedulingPattern(line[1]);
+        } catch (InvalidPatternException exception) {
+            event.getSender().sendMessage("请输入 cron4j 支持的表达式\n" + "http://www.sauronsoftware.it/projects/cron4j/manual.php");
             return;
         }
         getSelectedAnnouncement(event).ifPresent(
