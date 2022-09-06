@@ -492,10 +492,9 @@ public class AnnouncementController {
         );
     }
 
-    //TODO: Test
-
     /**
-     * @param event
+     * 设置变量
+     * @param event 好友消息事件
      */
 
     public void setVariable(FriendMessageEvent event) {
@@ -513,7 +512,7 @@ public class AnnouncementController {
                 a -> {
                     var body = a.getBody();
                     if (!(body instanceof TemplateBody)) {
-                        event.getSender().sendMessage("当前选中的公告不能作为模板");
+                        event.getSender().sendMessage("当前选中的公告不是模板公告");
                         return;
                     }
                     var tb = ((TemplateBody) body);
@@ -527,14 +526,16 @@ public class AnnouncementController {
                         }
                         tb.getVar().put(skv[0], skv[1]);
                     });
-                    a.setBody(tb);
+                    AnnouncementService.getInstance().setBody(a.getUuid(), a.getBody());
                     event.getSender().sendMessage("变量设置成功");
                 }
         );
     }
 
-    //TODO:TEST
-
+    /**
+     * 取消设置模板变量
+     * @param event 用户消息事件
+     */
     public void unsetVariable(FriendMessageEvent event) {
         if (!event.getMessage().contentToString().startsWith("取消变量")) {
             return;
@@ -550,13 +551,13 @@ public class AnnouncementController {
                 a -> {
                     var body = a.getBody();
                     if (!(body instanceof TemplateBody)) {
-                        event.getSender().sendMessage("当前选中的公告不能作为模板");
+                        event.getSender().sendMessage("当前选中的公告不是模板公告");
                         return;
                     }
                     var tb = ((TemplateBody) body);
-                    Arrays.stream(line).skip(1).forEach(k -> {
-                        tb.getVar().remove(k);
-                    });
+                    Arrays.stream(line).skip(1).forEach(k -> tb.getVar().remove(k));
+                    AnnouncementService.getInstance().setBody(a.getUuid(), a.getBody());
+                    event.getSender().sendMessage("变量取消成功");
                 });
     }
 
