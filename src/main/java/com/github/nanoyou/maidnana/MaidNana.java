@@ -1,6 +1,7 @@
 package com.github.nanoyou.maidnana;
 
 import com.github.nanoyou.maidnana.controller.*;
+import com.github.nanoyou.maidnana.service.AnnouncementService;
 import kotlin.Lazy;
 import kotlin.LazyKt;
 import net.mamoe.mirai.console.permission.*;
@@ -57,6 +58,8 @@ public final class MaidNana extends JavaPlugin {
     public void onEnable() {
         initChannels();
         initFiles();
+        AnnouncementService.getInstance().init();
+        announcementPermission.getValue();
     }
 
     /**

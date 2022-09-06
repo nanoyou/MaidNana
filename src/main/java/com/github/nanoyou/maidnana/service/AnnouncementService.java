@@ -1,13 +1,18 @@
 package com.github.nanoyou.maidnana.service;
 
+import com.github.nanoyou.maidnana.MaidNana;
 import com.github.nanoyou.maidnana.dao.AnnouncementDao;
 import com.github.nanoyou.maidnana.dao.TemplateDao;
 import com.github.nanoyou.maidnana.entity.Announcement;
 import com.github.nanoyou.maidnana.entity.Body;
 import com.github.nanoyou.maidnana.entity.Template;
 import com.github.nanoyou.maidnana.entity.Trigger;
+import it.sauronsoftware.cron4j.InvalidPatternException;
+import it.sauronsoftware.cron4j.Scheduler;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.Mirai;
 import org.jetbrains.annotations.TestOnly;
 
 import java.util.List;
@@ -20,6 +25,55 @@ public class AnnouncementService {
 
     public static AnnouncementService getInstance() {
         return instance;
+    }
+
+    private final Scheduler scheduler = new Scheduler();
+
+    private void flushTasks() {
+        var logger = MaidNana.INSTANCE.getLogger();
+
+        logger.info("刷新任务");
+        if (scheduler.isStarted()) {
+            logger.info("关闭现有的任务");
+            scheduler.stop();
+        }
+
+        Bot.getInstances().forEach(bot -> {
+            logger.info("Bot: " + bot.getId());
+        });
+
+        AnnouncementDao.getInstance()
+                .getAll().stream()
+                .filter(ann -> ann.isEnabled()
+                        && ann.getBody() != null
+                        && !ann.getGroups().isEmpty()
+                        && !ann.getTriggers().isEmpty()
+                ).forEach(ann -> ann.getTriggers().forEach(trigger -> {
+                    try {
+                        logger.info("添加公告: " + ann.getUuid());
+                        logger.info("群: " + ann.getGroups());
+                        scheduler.schedule(trigger.getCron(), () -> {
+                            Bot.getInstances().forEach(bot -> ann.getGroups().forEach(group -> {
+                                logger.info("尝试获取组");
+                                var g = bot.getGroup(group);
+                                logger.info("获取完成");
+                                if (g == null) return;
+
+                                logger.info("尝试发送公告");
+                                g.sendMessage(ann.getBody().getBodyString());
+                            }));
+                        });
+                    } catch (InvalidPatternException ignore) {
+                        logger.warning("cron 表达式格式错误: " + trigger.getCron());
+                    }
+                }));
+
+        scheduler.start();
+    }
+    public void init() {
+        flushTasks();
+        AnnouncementDao.getInstance().registerObserver(this::flushTasks);
+        TemplateDao.getInstance().registerObserver(this::flushTasks);
     }
 
     /**
