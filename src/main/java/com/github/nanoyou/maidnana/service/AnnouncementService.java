@@ -15,9 +15,7 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.Mirai;
 import org.jetbrains.annotations.TestOnly;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class AnnouncementService {
     private final static AnnouncementService instance = new AnnouncementService();
@@ -28,6 +26,7 @@ public class AnnouncementService {
     }
 
     private final Scheduler scheduler = new Scheduler();
+    private final List<String> tasks = new ArrayList<>();
 
     private void flushTasks() {
         var logger = MaidNana.INSTANCE.getLogger();
@@ -35,7 +34,9 @@ public class AnnouncementService {
         logger.info("刷新任务");
         if (scheduler.isStarted()) {
             logger.info("关闭现有的任务");
+            tasks.forEach(scheduler::deschedule);
             scheduler.stop();
+            tasks.clear();
         }
 
         Bot.getInstances().forEach(bot -> {
@@ -52,7 +53,7 @@ public class AnnouncementService {
                     try {
                         logger.info("添加公告: " + ann.getUuid());
                         logger.info("群: " + ann.getGroups());
-                        scheduler.schedule(trigger.getCron(), () -> {
+                        var id = scheduler.schedule(trigger.getCron(), () -> {
                             Bot.getInstances().forEach(bot -> ann.getGroups().forEach(group -> {
                                 logger.info("尝试获取组");
                                 var g = bot.getGroup(group);
@@ -63,6 +64,7 @@ public class AnnouncementService {
                                 g.sendMessage(ann.getBody().getBodyString());
                             }));
                         });
+                        tasks.add(id);
                     } catch (InvalidPatternException ignore) {
                         logger.warning("cron 表达式格式错误: " + trigger.getCron());
                     }
