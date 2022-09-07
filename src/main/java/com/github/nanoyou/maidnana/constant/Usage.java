@@ -33,6 +33,7 @@ public class Usage {
             + "\n命令列表如下, [] 代表可选参数, <> 代表必选参数, ...代表多个参数, * 表示需要先进行公告选择, - 后为使用说明\n"
             + HELP + "\n"
             + NEW_ANNOUNCEMENT + "\n"
+            + SELECT_ANNOUNCEMENT + "\n"
             + DELETE_ANNOUNCEMENT  + "\n"
             + LIST_ANNOUNCEMENTS + "\n"
             + SET_GROUP + "\n"
