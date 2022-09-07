@@ -377,6 +377,7 @@ public class AnnouncementController {
             if (keyAndValue.length < 1) {
                 return;
             }
+            keyAndValue[0] = keyAndValue[0].replaceAll("\\$", "");
             if (keyAndValue.length < 2) {
                 vars.put(keyAndValue[0], "");
                 return;
@@ -529,6 +530,7 @@ public class AnnouncementController {
                         if (skv.length < 1) {
                             return;
                         }
+                        skv[0] = skv[0].replaceAll("\\$", "");
                         if (skv.length < 2) {
                             tb.getVar().put(skv[0], "");
                         }
@@ -563,7 +565,7 @@ public class AnnouncementController {
                         return;
                     }
                     var tb = ((TemplateBody) body);
-                    Arrays.stream(line).skip(1).forEach(k -> tb.getVar().remove(k));
+                    Arrays.stream(line).skip(1).map(k -> k.replaceAll("\\$", "")).forEach(k -> tb.getVar().remove(k));
                     AnnouncementService.getInstance().setBody(a.getUuid(), a.getBody());
                     event.getSender().sendMessage("变量取消成功");
                 });
