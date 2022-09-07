@@ -159,7 +159,7 @@ public class TemplateController {
      * 查看模板信息
      */
     public void showTemplate(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("查看模板")) {
+        if (!event.getMessage().contentToString().startsWith("查看模板 ")) {
             return;
         }
         var idOrAlias = event.getMessage().contentToString().replaceFirst("查看模板\\s*", "");
