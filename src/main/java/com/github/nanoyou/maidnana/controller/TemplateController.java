@@ -59,6 +59,7 @@ public class TemplateController {
         Template result = null;
         if ("".equals(alias)) {
             result = TemplateService.getInstance().create(template);
+            event.getSender().sendMessage("创建成功, UUID: " + result.getUuid().toString());
         } else {
             var t = TemplateService.getInstance().create(template, alias);
             if (t.isEmpty()) {
@@ -66,8 +67,8 @@ public class TemplateController {
                 return;
             }
             result = t.get();
+            event.getSender().sendMessage("创建成功, UUID: " + result.getUuid().toString() + ", 别名: " + result.getAlias());
         }
-        event.getSender().sendMessage("创建成功, UUID: " + result.getUuid().toString());
     }
 
     /**
