@@ -1,7 +1,7 @@
 # メード　ナナ
-Maid Nana是一个Mirai插件,该项目正在开发中.
+Maid Nana 是一个 Mirai 插件, 提供定时公告功能.
 
-2022年8月31日 
-准备开发 定时公告模块
+# 文档
+[类图](docs/class-diagram.md)
 
-From Nanayou
+[用户手册](docs/user-manual.md)
