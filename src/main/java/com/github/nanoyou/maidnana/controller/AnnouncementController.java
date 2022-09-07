@@ -583,5 +583,17 @@ public class AnnouncementController {
         getSelectedAnnouncement(event).ifPresent(a -> event.getUser().sendMessage(formatAnnouncement(a)));
     }
 
+    public void manualTrigger(FriendMessageEvent event) {
+        if (!event.getMessage().contentToString().startsWith("发送公告")) {
+            return;
+        }
+        getSelectedAnnouncement(event).ifPresent(a -> {
+            if (AnnouncementService.getInstance().manualTrigger(a.getUuid())) {
+                event.getSender().sendMessage("发送成功");
+            } else {
+                event.getSender().sendMessage("发送失败");
+            }
+        });
+    }
 
 }

@@ -20,6 +20,7 @@ public class Usage {
     public static final String SET_VARIABLE = "设置变量\n变量1=值1\n变量2=值2\n... - 设置变量(仅支持模板公告体)*";
     public static final String UNSET_VARIABLE = "取消变量 <变量1> [变量2]... - 取消设置变量(仅支持模板公告体)*";
     public static final String SHOW_ANNOUNCEMENT = "查看公告 - 查看公告信息*";
+    public static final String MANUAL_TRIGGER = "发送公告 - 手动发送公告*";
     // TemplateController
     public static final String NEW_TEMPLATE = "新建模板 [模板别名]\n<模板体(多行)> - 新建公告模板, 使用'$'定义变量, 如$name$";
     public static final String DELETE_TEMPLATE = "删除模板 <模板UUID | 模板别名> - 删除公告模板";
@@ -44,6 +45,7 @@ public class Usage {
             + SET_VARIABLE + "\n"
             + UNSET_VARIABLE + "\n"
             + SHOW_ANNOUNCEMENT + "\n"
+            + MANUAL_TRIGGER + "\n"
             + NEW_TRIGGER + "\n"
             + DELETE_TRIGGER + "\n"
             + NEW_TEMPLATE + "\n"

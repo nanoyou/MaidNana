@@ -98,6 +98,8 @@ class AnnouncementService {
     +enable(String alias) Optional~Announcement~
     +disable(UUID announcementID) Optional~Announcement~
     +disable(String alias) Optional~Announcement~
+    +manualTrigger(UUID announcementID) boolean
+    +manualTrigger(String alias) boolean
     +getAll() List~Announcement~
 }
 class TemplateService {
