@@ -176,6 +176,7 @@ public class AnnouncementController {
             event.getSender().sendMessage("新建了一个公告\nUUID=" + a.getUuid() + "\n别名为“" + a.getAlias() + "”");
         }
 
+        AnnouncementService.getInstance().enable(a.getUuid());
         selectedAnnouncement.put(event.getSender().getId(), a.getUuid());
 
     }
