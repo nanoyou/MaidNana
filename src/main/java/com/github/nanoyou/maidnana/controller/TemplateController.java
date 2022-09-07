@@ -56,7 +56,7 @@ public class TemplateController {
             return;
         }
 
-        Template result = null;
+        Template result;
         if ("".equals(alias)) {
             result = TemplateService.getInstance().create(template);
             event.getSender().sendMessage("创建成功, UUID: " + result.getUuid().toString());
