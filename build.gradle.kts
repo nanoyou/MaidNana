@@ -19,7 +19,7 @@ tasks.withType<JavaCompile> {
 }
 
 group = "com.github.nanoyou"
-version = "0.1.0"
+version = "0.1.0-alpha"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public") // 阿里云国内代理仓库
