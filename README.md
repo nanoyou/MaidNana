@@ -1,7 +1,7 @@
-# Maid Nana
-这个仓库主很懒，还不知道要写什么。
-# 生成来自 mirai-console-plugin-template
+# メード　ナナ
+Maid Nana 是一个 Mirai 插件, 提供定时公告功能.
 
-[Mirai Console](https://github.com/mamoe/mirai-console) 插件模板, 使用 Kotlin + Gradle.
+# 文档
+[类图](docs/class-diagram.md)
 
-[如何使用](https://github.com/project-mirai/how-to-use-plugin-template)
+[用户手册](docs/user-manual.md)
