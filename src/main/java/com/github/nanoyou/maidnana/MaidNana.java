@@ -49,7 +49,7 @@ public final class MaidNana extends JavaPlugin {
     }
 
     private MaidNana() {
-        super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.1.0-alpha")
+        super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.1.0-alpha.1")
                 .info("EG")
                 .build());
     }
