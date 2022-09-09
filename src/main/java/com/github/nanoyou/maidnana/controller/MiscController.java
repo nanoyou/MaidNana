@@ -11,7 +11,7 @@ public class MiscController {
     }
 
     public void usage(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("帮助")) {
+        if (!event.getMessage().contentToString().trim().equals("帮助")) {
             return;
         }
         event.getSender().sendMessage(Usage.USAGE);

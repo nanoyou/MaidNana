@@ -177,7 +177,7 @@ public class TemplateController {
      * 查看模板列表
      */
     public void listTemplates(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("模板列表")) {
+        if (!event.getMessage().contentToString().trim().equals("模板列表")) {
             return;
         }
         TemplateService.getInstance().getAll().forEach(template ->

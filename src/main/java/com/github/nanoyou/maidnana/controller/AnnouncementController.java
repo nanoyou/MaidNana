@@ -215,7 +215,7 @@ public class AnnouncementController {
      */
     public void deleteAnnouncement(FriendMessageEvent event) {
 
-        if (!event.getMessage().contentToString().startsWith("删除公告")) {
+        if (!event.getMessage().contentToString().trim().equals("删除公告")) {
             return;
         }
 
@@ -236,7 +236,7 @@ public class AnnouncementController {
      */
     public void listAnnouncements(FriendMessageEvent event) {
 
-        if (!event.getMessage().contentToString().startsWith("公告列表")) {
+        if (!event.getMessage().contentToString().trim().equals("公告列表")) {
             return;
         }
 
@@ -401,7 +401,7 @@ public class AnnouncementController {
      * @param event 好友信息事件
      */
     public void enableAnnouncement(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("开启公告")) {
+        if (!event.getMessage().contentToString().trim().equals("开启公告")) {
             return;
         }
 
@@ -417,7 +417,7 @@ public class AnnouncementController {
      * @param event 好友信息事件
      */
     public void disableAnnouncement(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("禁用公告")) {
+        if (!event.getMessage().contentToString().trim().equals("禁用公告")) {
             return;
         }
 
@@ -494,7 +494,7 @@ public class AnnouncementController {
      * @param event 好友消息事件
      */
     public void preview(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("预览")) {
+        if (!event.getMessage().contentToString().trim().equals("预览")) {
             return;
         }
         getSelectedAnnouncement(event).ifPresent(
@@ -577,14 +577,14 @@ public class AnnouncementController {
      * @param event 好友消息事件
      */
     public void showAnnouncement(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("查看公告")) {
+        if (!event.getMessage().contentToString().trim().equals("查看公告")) {
             return;
         }
         getSelectedAnnouncement(event).ifPresent(a -> event.getUser().sendMessage(formatAnnouncement(a)));
     }
 
     public void manualTrigger(FriendMessageEvent event) {
-        if (!event.getMessage().contentToString().startsWith("发送公告")) {
+        if (!event.getMessage().contentToString().trim().equals("发送公告")) {
             return;
         }
         getSelectedAnnouncement(event).ifPresent(a -> {
