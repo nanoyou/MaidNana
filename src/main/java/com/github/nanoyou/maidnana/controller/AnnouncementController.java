@@ -131,12 +131,12 @@ public class AnnouncementController {
     private Optional<Announcement> getSelectedAnnouncement(FriendMessageEvent event) {
         var ann = selectedAnnouncement.get(event.getSender().getId());
         if (ann == null) {
-            event.getSender().sendMessage("请先选择公告");
+            event.getSender().sendMessage("请先选择公告, 用法:\n" + Usage.SELECT_ANNOUNCEMENT);
             return Optional.empty();
         }
         var optAnn = AnnouncementService.getInstance().get(ann);
         if (optAnn.isEmpty()) {
-            event.getSender().sendMessage("公告已被删除");
+            event.getSender().sendMessage("公告已被删除, 请重新选择, 用法:\n" + Usage.SELECT_ANNOUNCEMENT);
         }
         return optAnn;
     }
