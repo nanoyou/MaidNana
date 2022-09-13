@@ -50,7 +50,7 @@ public final class MaidNana extends JavaPlugin {
     }
 
     private MaidNana() {
-        super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.1.0-alpha.1")
+        super(new JvmPluginDescriptionBuilder("com.github.nanoyou.maidnana", "0.2.0-alpha")
                 .info("EG")
                 .build());
     }
