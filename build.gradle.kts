@@ -16,6 +16,11 @@ tasks.withType<KotlinCompile> {
 tasks.withType<JavaCompile> {
     sourceCompatibility = "11"
     targetCompatibility = "11"
+    dependsOn("copyWebResources")
+}
+tasks.register<Copy>("copyWebResources") {
+    from("MaidNanaFrontEnd/dist")
+    into("build/resources/main/META-INF/public")
 }
 
 group = "com.github.nanoyou"
