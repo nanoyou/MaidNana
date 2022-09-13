@@ -2,6 +2,7 @@ package com.github.nanoyou.maidnana;
 
 import com.github.nanoyou.maidnana.controller.*;
 import com.github.nanoyou.maidnana.service.AnnouncementService;
+import com.github.nanoyou.maidnana.web.MainKt;
 import kotlin.Lazy;
 import kotlin.LazyKt;
 import net.mamoe.mirai.console.permission.*;
@@ -60,6 +61,10 @@ public final class MaidNana extends JavaPlugin {
         initFiles();
         AnnouncementService.getInstance().init();
         announcementPermission.getValue();
+        // 初始化 Web 服务
+        getLogger().info("开启 web 服务");
+        MainKt.main();
+        getLogger().info("初始化完成");
     }
 
     /**
