@@ -15,7 +15,10 @@ fun main() {
             gson {  }
         }
         routing {
-            resources("META-INF/public")
+            static("/") {
+                resources("META-INF/public")
+                defaultResource("META-INF/public/index.html")
+            }
             route("/api") {
                 get("hello") {
                     val r = HashMap<String, String>()
@@ -25,5 +28,5 @@ fun main() {
             }
         }
     }
-    server.start(wait = false)
+    server.start(wait = true)
 }

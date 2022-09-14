@@ -63,7 +63,7 @@ public final class MaidNana extends JavaPlugin {
         announcementPermission.getValue();
         // 初始化 Web 服务
         getLogger().info("开启 web 服务");
-        MainKt.main();
+        new Thread(MainKt::main, "WebThread").start();
         getLogger().info("初始化完成");
     }
 
