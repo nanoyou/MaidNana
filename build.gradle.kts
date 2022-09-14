@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     val kotlinVersion = "1.6.10"
     kotlin("jvm") version kotlinVersion
@@ -8,14 +6,14 @@ plugins {
     id("net.mamoe.mirai-console") version "2.11.1"
 }
 
-tasks.withType<KotlinCompile> {
+tasks.compileKotlin {
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 tasks.withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
     dependsOn("copyWebResources")
 }
 tasks.register<Copy>("copyWebResources") {
@@ -38,8 +36,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.1")
     implementation("it.sauronsoftware.cron4j:cron4j:2.2.5")
 
-    //ktor
+    // ktor
     implementation("io.ktor", "ktor-server-netty", ktorVersion)
     implementation("io.ktor", "ktor-server-content-negotiation", ktorVersion)
     implementation("io.ktor", "ktor-serialization-gson", ktorVersion)
+    // api 文档
+    implementation("io.bkbn:kompendium-core:3.2.0")
 }
