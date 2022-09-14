@@ -10,7 +10,8 @@ import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import java.io.File
 
-object T {}
+object T
+
 fun main() {
     val server = embeddedServer(Netty, 5277) {
         install(ContentNegotiation) {
