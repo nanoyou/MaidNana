@@ -21,7 +21,7 @@ import java.net.URI
 object T
 
 fun main() {
-    val server = embeddedServer(Netty, 5277) {
+    val server = embeddedServer(Netty, MaidNanaConstant.WEB_PORT) {
         install(ContentNegotiation) {
             gson {  }
         }
