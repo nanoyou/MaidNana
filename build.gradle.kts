@@ -26,7 +26,7 @@ tasks.register<Copy>("copyWebResources") {
 group = "com.github.nanoyou"
 version = "0.2.0-alpha"
 
-var ktorVersion = "1.4.0"
+var ktorVersion = "2.1.0"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public") // 阿里云国内代理仓库
@@ -39,7 +39,7 @@ dependencies {
     implementation("it.sauronsoftware.cron4j:cron4j:2.2.5")
 
     //ktor
-    implementation("io.ktor", "ktor-server-core", ktorVersion)
     implementation("io.ktor", "ktor-server-netty", ktorVersion)
-    implementation("io.ktor", "ktor-gson", ktorVersion)
+    implementation("io.ktor", "ktor-server-content-negotiation", ktorVersion)
+    implementation("io.ktor", "ktor-serialization-gson", ktorVersion)
 }
