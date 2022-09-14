@@ -218,9 +218,9 @@ meeting_number = 114514
 查看模板列表
 
 
-# 别名
+## 别名
 别名是一个不可重复的标识符, 用于替代 UUID 帮助记忆.
-## Cron表达式
+### Cron表达式
 本项目采用 cron4j 版本的表达式.
 
 [教程](https://www.sunjs.com/article/detail/08121e5540134b43890eca810ecc8af4.html)
