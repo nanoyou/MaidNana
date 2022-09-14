@@ -45,35 +45,38 @@ public class AnnouncementService {
         var logger = MaidNana.INSTANCE.getLogger();
 
         logger.info("刷新任务");
-        if (scheduler.isStarted()) {
-            logger.info("关闭现有的任务");
-            tasks.forEach(scheduler::deschedule);
-            scheduler.stop();
-            tasks.clear();
+        synchronized ("scheduler") {
+
+            if (scheduler.isStarted()) {
+                logger.info("关闭现有的任务");
+                tasks.forEach(scheduler::deschedule);
+                scheduler.stop();
+                tasks.clear();
+            }
+
+            Bot.getInstances().forEach(bot -> {
+                logger.info("Bot: " + bot.getId());
+            });
+
+            AnnouncementDao.getInstance()
+                    .getAll().stream()
+                    .filter(ann -> ann.isEnabled()
+                            && ann.getBody() != null
+                            && !ann.getGroups().isEmpty()
+                            && !ann.getTriggers().isEmpty()
+                    ).forEach(ann -> ann.getTriggers().forEach(trigger -> {
+                        try {
+                            logger.info("添加公告: " + ann.getUuid());
+                            logger.info("群: " + ann.getGroups());
+                            var id = scheduler.schedule(trigger.getCron(), () -> sendAnnouncement(ann));
+                            tasks.add(id);
+                        } catch (InvalidPatternException ignore) {
+                            logger.warning("cron 表达式格式错误: " + trigger.getCron());
+                        }
+                    }));
+
+            scheduler.start();
         }
-
-        Bot.getInstances().forEach(bot -> {
-            logger.info("Bot: " + bot.getId());
-        });
-
-        AnnouncementDao.getInstance()
-                .getAll().stream()
-                .filter(ann -> ann.isEnabled()
-                        && ann.getBody() != null
-                        && !ann.getGroups().isEmpty()
-                        && !ann.getTriggers().isEmpty()
-                ).forEach(ann -> ann.getTriggers().forEach(trigger -> {
-                    try {
-                        logger.info("添加公告: " + ann.getUuid());
-                        logger.info("群: " + ann.getGroups());
-                        var id = scheduler.schedule(trigger.getCron(), () -> sendAnnouncement(ann));
-                        tasks.add(id);
-                    } catch (InvalidPatternException ignore) {
-                        logger.warning("cron 表达式格式错误: " + trigger.getCron());
-                    }
-                }));
-
-        scheduler.start();
     }
     public void init() {
         flushTasks();

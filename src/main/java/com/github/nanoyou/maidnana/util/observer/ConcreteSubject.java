@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ConcreteSubject implements Subject {
 
-    private final List<Observer> observers = new LinkedList<>();
+    private final List<Observer> observers = Collections.synchronizedList(new LinkedList<>());
 
     @Override
     public void registerObserver(Observer observer) {

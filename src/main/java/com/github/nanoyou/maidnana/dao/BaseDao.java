@@ -34,9 +34,11 @@ public abstract class BaseDao<T extends Identifiable> implements Subject {
      * @param value 要添加的值
      */
     public void add(T value) {
-        data.put(value.getUuid(), value);
-        save();
-        notifyObservers();
+        synchronized (this) {
+            data.put(value.getUuid(), value);
+            save();
+            notifyObservers();
+        }
     }
 
     /**
@@ -46,7 +48,10 @@ public abstract class BaseDao<T extends Identifiable> implements Subject {
      * @return 取得的值
      */
     public Optional<T> get(UUID id) {
-        var r = data.get(id);
+        T r;
+        synchronized (this) {
+            r = data.get(id);
+        }
         if (r == null) {
             return Optional.empty();
         }
@@ -60,9 +65,12 @@ public abstract class BaseDao<T extends Identifiable> implements Subject {
      * @return  修改前的值
      */
     public T modify(T value) {
-        var r = data.put(value.getUuid(), value);
-        save();
-        notifyObservers();
+        T r;
+        synchronized (this) {
+            r = data.put(value.getUuid(), value);
+            save();
+            notifyObservers();
+        }
         return r;
     }
 
@@ -73,12 +81,15 @@ public abstract class BaseDao<T extends Identifiable> implements Subject {
      * @return 被删除的值, 若未找到返回空
      */
     public Optional<T> delete(UUID id) {
-        var r = data.remove(id);
-        if (r == null) {
-            return Optional.empty();
+        T r;
+        synchronized (this) {
+            r = data.remove(id);
+            if (r == null) {
+                return Optional.empty();
+            }
+            save();
+            notifyObservers();
         }
-        save();
-        notifyObservers();
         return Optional.of(r);
     }
 
@@ -88,7 +99,9 @@ public abstract class BaseDao<T extends Identifiable> implements Subject {
      * @return 全部值
      */
     public List<T> getAll() {
-        return new ArrayList<>(data.values());
+        synchronized (this) {
+            return new ArrayList<>(data.values());
+        }
     }
 
     private void load() {
